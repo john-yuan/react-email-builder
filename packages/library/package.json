@@ -1,0 +1,36 @@
+{
+  "name": "my-package-name",
+  "version": "0.0.1-alpha.1",
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "types": "es/index.d.ts",
+  "scripts": {
+    "build": "tsc && tsc --outDir es --module es2020 --target es2020",
+    "dev": "concurrently -k -r 'npm:watch:*'",
+    "format": "prettier --write .",
+    "lint-staged": "lint-staged --allow-empty",
+    "lint": "eslint --ext .js,.ts,.tsx ./src",
+    "lint:fix": "eslint --fix --ext .js,.ts,.tsx ./src",
+    "prepare": "npm run build",
+    "watch:css": "lessc-watch src/index.less styles.css -ru=all -d src",
+    "watch:ts": "tsc --outDir es --module es2020 --target es2020 --watch --pretty false --preserveWatchOutput true"
+  },
+  "dependencies": {
+    "clsx": "^2.1.0",
+    "react": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.48",
+    "@typescript-eslint/eslint-plugin": "^6.19.1",
+    "@typescript-eslint/parser": "^6.19.1",
+    "concurrently": "^8.2.2",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "lessc-watch": "^1.2.0",
+    "lint-staged": "^15.2.0",
+    "prettier": "3.2.4",
+    "typescript": "5.3.3"
+  },
+  "license": "MIT"
+}

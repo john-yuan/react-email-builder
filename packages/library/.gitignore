@@ -1,0 +1,11 @@
+*.swp
+.DS_Store
+package-lock.json
+yarn.lock
+
+dist
+es
+lib
+node_modules
+
+/styles.css

@@ -1,0 +1,4 @@
+docsDir: ./src/docs
+outDir: ./src/docs/.generated
+emptyOutDir: build-only
+useReactLazy: true

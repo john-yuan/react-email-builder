@@ -1,0 +1,10 @@
+{
+  "private": true,
+  "scripts": {
+    "dev": "pnpm run --parallel dev",
+    "prepare": "pnpm run --parallel prepare",
+    "format": "pnpm run --workspace-concurrency=1 -r format",
+    "lint": "pnpm run --workspace-concurrency=1 -r lint",
+    "lint-staged": "pnpm run --workspace-concurrency=1 -r lint-staged"
+  }
+}
