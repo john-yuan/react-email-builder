@@ -1,0 +1,20 @@
+@keyframes reb-spinning {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.REB-Icon {
+  width: 1em;
+  height: 1em;
+
+  &-spinning {
+    width: 1em;
+    height: 1em;
+    animation: reb-spinning 1s linear infinite;
+  }
+}

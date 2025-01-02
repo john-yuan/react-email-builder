@@ -1,7 +1,7 @@
 import '@firedocs/ui/styles.css'
 import '@firedocs/ui/prism/prism.css'
 import '@firedocs/ui/prism/prism.js'
-import 'my-package-name/styles.css'
+import 'react-email-builder/styles.css'
 
 import type { Settings, SsgContext } from '@firedocs/core'
 import type { UISettings } from '@firedocs/ui'
@@ -13,7 +13,8 @@ import Provider from './.generated'
 
 const settings: Settings<UISettings> = {
   debug: true,
-  contextPath: '/docs'
+  contextPath: '/docs',
+  colorScheme: 'light'
 }
 
 export default function Docs({ ssgContext }: { ssgContext?: SsgContext }) {

@@ -1,0 +1,23 @@
+.REB-Sidebar {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  &-header {
+    height: var(--reb-header-height);
+    box-sizing: border-box;
+    border-bottom: 1px solid var(--reb-border-color);
+  }
+
+  &-body {
+    flex-grow: 1;
+    flex-shrink: 1;
+    min-height: 1;
+    position: relative;
+  }
+}

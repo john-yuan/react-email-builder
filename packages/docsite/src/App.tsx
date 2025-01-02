@@ -5,7 +5,7 @@ import Docs from './docs'
 export default function App({ ssgContext }: { ssgContext?: SsgContext }) {
   return (
     <Routes>
-      <Route path="/" element={<Navigate to="/docs/get-started" />} />
+      <Route path="/" element={<Navigate to="/docs/email-builder" />} />
       <Route path="/docs/*" element={<Docs ssgContext={ssgContext} />} />
     </Routes>
   )

@@ -1,0 +1,28 @@
+.REB-EmailBuilder {
+  display: flex;
+  box-sizing: border-box;
+  border: 1px solid var(--reb-border-color);
+
+  &-aside {
+    width: 300px;
+    flex-grow: 0;
+    flex-shrink: 0;
+    min-width: 0;
+    box-sizing: border-box;
+    position: relative;
+  }
+
+  &-aside-left {
+    border-right: 1px solid var(--reb-border-color);
+  }
+
+  &-aside-right {
+    border-left: 1px solid var(--reb-border-color);
+  }
+
+  &-main {
+    flex-grow: 1;
+    flex-shrink: 1;
+    min-width: 0;
+  }
+}

@@ -1,5 +1,5 @@
 {
-  "name": "my-package-name",
+  "name": "react-email-builder",
   "version": "0.0.1-alpha.1",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -13,10 +13,12 @@
     "lint:fix": "eslint --fix --ext .js,.ts,.tsx ./src",
     "prepare": "npm run build",
     "watch:css": "lessc-watch src/index.less styles.css -ru=all -d src",
-    "watch:ts": "tsc --outDir es --module es2020 --target es2020 --watch --pretty false --preserveWatchOutput true"
+    "watch:ts": "tsc --outDir es --module es2020 --target es2020 --watch --pretty false --preserveWatchOutput true",
+    "icons": "npx generate-svg-symbols -d ./src/components/SvgSymbols/svg -o src/components/SvgSymbols/symbols.ts -t -n SVG -p reb-icon-"
   },
   "dependencies": {
     "clsx": "^2.1.0",
+    "generate-svg-symbols": "^1.3.0",
     "react": "^18.2.0"
   },
   "devDependencies": {

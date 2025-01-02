@@ -16,7 +16,7 @@
   "dependencies": {
     "@firedocs/core": "0.0.1-alpha.10",
     "@firedocs/ui": "0.0.1-alpha.10",
-    "my-package-name": "workspace:^",
+    "react-email-builder": "workspace:^",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.21.3"
