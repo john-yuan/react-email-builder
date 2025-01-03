@@ -4,10 +4,10 @@ import { ColumnsBlock } from './ColumnsBlock'
 import { ColumnsBlockEditor } from './ColumnsBlockEditor'
 import { createPlaceholder, generateId } from '../../utils'
 import type { EmailBuilderBlock, EmailBuilderBlockConfig } from '../../types'
-import type { Column, ColumnsBlockAttrs } from './types'
+import type { EmailEditorColumn, ColumnsBlockAttrs } from './types'
 
 export function columnsBlock(): EmailBuilderBlockConfig<ColumnsBlockAttrs> {
-  const createColumn = (): Column => {
+  const createColumn = (): EmailEditorColumn => {
     return {
       id: generateId(),
       style: {},

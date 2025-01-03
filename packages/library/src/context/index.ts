@@ -1,6 +1,10 @@
 import type React from 'react'
 import { createContext } from 'react'
-import type { EmailBuilderConfig, EmailBuilderState } from '../types'
+import type {
+  EmailBuilderConfig,
+  EmailBuilderSelectedBlockInfo,
+  EmailBuilderState
+} from '../types'
 
 export const EmailBuilderConfigContext = createContext<EmailBuilderConfig>({
   blocks: []
@@ -13,3 +17,6 @@ export const EmailBuilderStateContext = createContext<EmailBuilderState>({
 export const SetEmailBuilderStateContext = createContext<
   React.Dispatch<React.SetStateAction<EmailBuilderState>>
 >(() => {})
+
+export const EmailBuilderSelectedBlockInfoContext =
+  createContext<EmailBuilderSelectedBlockInfo>({})

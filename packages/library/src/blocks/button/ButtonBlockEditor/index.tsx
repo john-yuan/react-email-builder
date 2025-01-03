@@ -1,15 +1,36 @@
 import React from 'react'
 import type { EmailBuilderBlock } from '../../../types'
 import type { ButtonBlockAttrs } from '../types'
+import { Field } from '../../../controls/Field'
+import { TextInput } from '../../../controls/TextInput'
+import { useBlockAttrsEditor } from '../../../hooks'
 
 export interface Props {
   block: EmailBuilderBlock<ButtonBlockAttrs>
 }
 
 export function ButtonBlockEditor({ block }: Props) {
+  const attrs = block.attrs
+  const setAttrs = useBlockAttrsEditor(block)
   return (
-    <div>
-      {block.type} - {block.id}
-    </div>
+    <>
+      <Field label="Text" vertical>
+        <TextInput
+          value={attrs.text}
+          onChange={(text) => {
+            setAttrs({ text })
+          }}
+        />
+      </Field>
+      <Field label="URL" vertical>
+        <TextInput
+          textarea
+          value={attrs.url}
+          onChange={(url) => {
+            setAttrs({ url })
+          }}
+        />
+      </Field>
+    </>
   )
 }

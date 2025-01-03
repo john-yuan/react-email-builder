@@ -1,4 +1,8 @@
 import type React from 'react'
+import type {
+  EmailEditorColumn,
+  ColumnsBlockAttrs
+} from '../blocks/columns/types'
 
 export interface EmailBuilderConfig {
   /**
@@ -140,4 +144,12 @@ export interface EmailBuilderState {
    * The current selected tab in sidebar.
    */
   tab?: 'blocks' | 'settings' | 'page'
+}
+
+export interface EmailBuilderSelectedBlockInfo {
+  block?: EmailBuilderBlock
+  columns?: EmailBuilderBlock<ColumnsBlockAttrs>
+  column?: EmailEditorColumn
+  first?: boolean
+  last?: boolean
 }

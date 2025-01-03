@@ -1,5 +1,10 @@
+import type { ColumnsBlockAttrs } from '../blocks/columns/types'
 import type { PlaceholderAttrs } from '../blocks/placeholder/types'
-import type { EmailBuilderBlock, EmailBuilderConfig } from '../types'
+import type {
+  EmailBuilderBlock,
+  EmailBuilderConfig,
+  EmailBuilderSelectedBlockInfo
+} from '../types'
 
 let counter = 0
 let prefix: string | null = null
@@ -68,4 +73,48 @@ export function namespace(module: string) {
 
 export function varsClass() {
   return namespace('vars')()
+}
+
+export function getSelectedBlock(
+  blocks: EmailBuilderBlock[],
+  selectedId?: string
+): EmailBuilderSelectedBlockInfo {
+  if (selectedId) {
+    for (let i = 0; i < blocks.length; i += 1) {
+      const block = blocks[i]
+
+      if (block.id === selectedId) {
+        return {
+          block,
+          first: i === 0,
+          last: i === blocks.length - 1
+        }
+      }
+
+      if (block.type === 'columns') {
+        const { columns } = (block as EmailBuilderBlock<ColumnsBlockAttrs>)
+          .attrs
+        for (let j = 0; j < columns.length; j += 1) {
+          const column = columns[j]
+          const columnBlocks = column.blocks
+
+          for (let k = 0; k < columnBlocks.length; k += 1) {
+            const columnBlock = columnBlocks[k]
+
+            if (columnBlock.id === selectedId) {
+              return {
+                columns: block,
+                column,
+                block: columnBlock,
+                first: k === 0,
+                last: k === columnBlocks.length - 1
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  return {}
 }

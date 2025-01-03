@@ -1,0 +1,27 @@
+.REB-TextInput {
+  textarea,
+  input {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 0;
+    border: 1px solid var(--reb-control-border-color);
+    padding: 8px 10px;
+    resize: vertical;
+    min-height: 38px;
+    height: 38px;
+    line-height: 22px;
+    font-size: 14px;
+    font-family: inherit;
+
+    outline: none;
+
+    &:focus {
+      border-color: #000;
+    }
+  }
+
+  textarea {
+    height: 82px;
+  }
+}

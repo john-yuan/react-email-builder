@@ -5,12 +5,12 @@ export interface ColumnStyle {
   padding?: number[]
 }
 
-export interface Column {
+export interface EmailEditorColumn {
   id: string
   style: ColumnStyle
   blocks: EmailBuilderBlock[]
 }
 
 export interface ColumnsBlockAttrs {
-  columns: Column[]
+  columns: EmailEditorColumn[]
 }
