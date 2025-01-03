@@ -7,7 +7,7 @@ import {
   EmailBuilderStateContext,
   SetEmailBuilderStateContext
 } from '../../context'
-import { getSelectedBlock, namespace, varsClass } from '../../utils'
+import { getCss, getSelectedBlock, varsClass } from '../../utils'
 import { SvgSymbols } from '../SvgSymbols'
 import { Sidebar } from '../Sidebar'
 import { MainArea } from '../MainArea'
@@ -20,12 +20,9 @@ export function EmailBuilder({
   setState,
   sidebarPosition
 }: EmailBuilderProps) {
-  const css = useMemo(() => {
-    const ns = namespace('EmailBuilder')
-    return {
-      root: clsx(varsClass(), ns())
-    }
-  }, [])
+  const css = getCss('EmailBuilder', (ns) => ({
+    root: clsx(varsClass(), ns())
+  }))
 
   const rightSidebar = sidebarPosition === 'right'
   const sidebar = <Sidebar right={rightSidebar} />

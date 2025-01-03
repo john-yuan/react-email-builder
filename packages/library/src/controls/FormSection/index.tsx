@@ -1,6 +1,6 @@
-import React, { useMemo, useState } from 'react'
+import React, { useState } from 'react'
 import { Icon } from '../../components/Icon'
-import { namespace } from '../../utils'
+import { getCss } from '../../utils'
 
 export interface Props {
   name: string
@@ -10,16 +10,13 @@ export interface Props {
 
 export function FormSection({ name, defaultOpen, children }: Props) {
   const [open, setOpen] = useState(defaultOpen)
-  const css = useMemo(() => {
-    const ns = namespace('FormSection')
-    return {
-      root: ns(),
-      header: ns('header'),
-      section: ns('section'),
-      text: ns('text'),
-      icon: ns('icon')
-    }
-  }, [])
+  const css = getCss('FormSection', (ns) => ({
+    root: ns(),
+    header: ns('header'),
+    section: ns('section'),
+    text: ns('text'),
+    icon: ns('icon')
+  }))
   return (
     <>
       <div

@@ -1,18 +1,15 @@
-import React, { useCallback, useMemo } from 'react'
-import { namespace } from '../../utils'
+import React, { useCallback } from 'react'
+import { getCss } from '../../utils'
 import { Blocks } from '../Blocks'
 import { useEmailBuilderState, useSetEmailBuilderState } from '../../hooks'
 
 export function MainArea() {
-  const css = useMemo(() => {
-    const ns = namespace('MainArea')
-    return {
-      root: ns(),
-      header: ns('header'),
-      body: ns('body'),
-      email: ns('email-page')
-    }
-  }, [])
+  const css = getCss('MainArea', (ns) => ({
+    root: ns(),
+    header: ns('header'),
+    body: ns('body'),
+    email: ns('email-page')
+  }))
 
   const state = useEmailBuilderState()
   const style = state.pageStyle || {}

@@ -1,5 +1,5 @@
 import React from 'react'
-import { namespace } from '../../utils'
+import { getCss } from '../../utils'
 
 export interface Props {
   autoFocus?: boolean
@@ -16,8 +16,9 @@ export function TextInput({
   autoFocus,
   onChange
 }: Props) {
+  const css = getCss('TextInput', (ns) => ({ root: ns() }))
   return (
-    <div className={namespace('TextInput')()}>
+    <div className={css.root}>
       {textarea ? (
         <textarea
           placeholder={placeholder}

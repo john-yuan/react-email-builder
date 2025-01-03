@@ -1,11 +1,11 @@
 import clsx from 'clsx'
-import React, { memo, useCallback, useMemo } from 'react'
+import React, { memo, useCallback } from 'react'
 import type {
   EmailBuilderBlock,
   EmailBuilderConfig,
   EmailBuilderState
 } from '../../types'
-import { namespace } from '../../utils'
+import { getCss } from '../../utils'
 import { useEmailBuilderConfig, useSetEmailBuilderState } from '../../hooks'
 import { DropArea } from '../DropArea'
 import { Placeholder } from '../../blocks/placeholder'
@@ -86,21 +86,17 @@ export function Block({
   selected,
   showDropArea
 }: Props) {
-  const css = useMemo(() => {
-    const ns = namespace('Block')
-
-    return {
-      section: ns('section'),
-      full: ns('section-full'),
-      block: ns(),
-      dropArea: ns('drop-area'),
-      dragover: ns('dragover'),
-      selected: ns('selected'),
-      active: ns('active'),
-      column: ns('column'),
-      content: ns('content')
-    }
-  }, [])
+  const css = getCss('Block', (ns) => ({
+    section: ns('section'),
+    full: ns('section-full'),
+    block: ns(),
+    dropArea: ns('drop-area'),
+    dragover: ns('dragover'),
+    selected: ns('selected'),
+    active: ns('active'),
+    column: ns('column'),
+    content: ns('content')
+  }))
 
   const { sectionStyle } = block
   const config = useEmailBuilderConfig()

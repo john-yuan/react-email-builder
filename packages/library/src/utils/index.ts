@@ -118,3 +118,18 @@ export function getSelectedBlock(
 
   return {}
 }
+
+const mCss: Record<string, any> = {}
+
+export function getCss<T extends object = any>(
+  module: string,
+  factory: (ns: (className?: string) => string) => T
+): T {
+  let css = mCss[module]
+
+  if (!css) {
+    css = factory(namespace(module))
+    mCss[module] = css
+  }
+  return css
+}

@@ -1,7 +1,7 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 import type { EmailBuilderBlock } from '../../types'
 import type { PlaceholderAttrs } from './types'
-import { namespace } from '../../utils'
+import { getCss } from '../../utils'
 import { useEmailBuilderState } from '../../hooks'
 import clsx from 'clsx'
 
@@ -11,10 +11,12 @@ export interface Props {
 
 export function Placeholder({ block }: Props) {
   const { draggingType, dragoverId } = useEmailBuilderState()
-  const css = useMemo(() => {
-    const ns = namespace('Placeholder')
-    return { root: ns(), dragging: ns('dragging'), dragover: ns('dragover') }
-  }, [])
+
+  const css = getCss('Placeholder', (ns) => ({
+    root: ns(),
+    dragging: ns('dragging'),
+    dragover: ns('dragover')
+  }))
 
   return (
     <div

@@ -1,24 +1,21 @@
 import clsx from 'clsx'
 import React, { useEffect, useMemo, useState } from 'react'
-import { namespace } from '../../utils'
+import { getCss } from '../../utils'
 import { BlockIcons } from '../BlockIcons'
 import { useEmailBuilderState, useSetEmailBuilderState } from '../../hooks'
 import { BlockEditor } from '../BlockEditor'
 import { PageEditor } from '../PageEditor'
 
 export function Sidebar({ right }: { right?: boolean }) {
-  const css = useMemo(() => {
-    const ns = namespace('Sidebar')
-    return {
-      left: clsx(ns(), ns('left')),
-      right: clsx(ns(), ns('right')),
-      header: ns('header'),
-      body: ns('body'),
-      tabs: ns('tabs'),
-      tab: ns('tab'),
-      active: ns('tab-active')
-    }
-  }, [])
+  const css = getCss('Sidebar', (ns) => ({
+    left: clsx(ns(), ns('left')),
+    right: clsx(ns(), ns('right')),
+    header: ns('header'),
+    body: ns('body'),
+    tabs: ns('tabs'),
+    tab: ns('tab'),
+    active: ns('tab-active')
+  }))
 
   const setState = useSetEmailBuilderState()
   const tab = useEmailBuilderState().tab || 'blocks'

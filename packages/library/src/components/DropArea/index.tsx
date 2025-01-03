@@ -1,6 +1,6 @@
 import clsx from 'clsx'
-import React, { useCallback, useMemo } from 'react'
-import { namespace } from '../../utils'
+import React, { useCallback } from 'react'
+import { getCss } from '../../utils'
 import { useSetEmailBuilderState } from '../../hooks'
 import type { EmailBuilderBlock, EmailBuilderState } from '../../types'
 
@@ -11,26 +11,23 @@ export interface Props {
 }
 
 export function DropArea({ role, dragover, block }: Props) {
-  const css = useMemo(() => {
-    const ns = namespace('DropArea')
-    return {
-      root: ns(),
-      dragover: ns('dragover'),
-      column: ns('column'),
-      columns: ns('columns'),
+  const css = getCss('DropArea', (ns) => ({
+    root: ns(),
+    dragover: ns('dragover'),
+    column: ns('column'),
+    columns: ns('columns'),
 
-      border: ns('border'),
-      active: ns('active'),
-      top: ns('top'),
-      bottom: ns('bottom'),
+    border: ns('border'),
+    active: ns('active'),
+    top: ns('top'),
+    bottom: ns('bottom'),
 
-      text: ns('text'),
-      textVisible: ns('text-visible'),
-      textTop: ns('text-top'),
-      textBottom: ns('text-bottom'),
-      textCenter: ns('text-center')
-    }
-  }, [])
+    text: ns('text'),
+    textVisible: ns('text-visible'),
+    textTop: ns('text-top'),
+    textBottom: ns('text-bottom'),
+    textCenter: ns('text-center')
+  }))
 
   const placeholder = block.type === 'placeholder'
 

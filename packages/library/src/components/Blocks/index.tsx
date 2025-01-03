@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 import React, { memo, useCallback, useMemo } from 'react'
-import { namespace } from '../../utils'
+import { getCss } from '../../utils'
 import {
   useBlockStyle,
   useEmailBuilderState,
@@ -17,10 +17,9 @@ export function Blocks({
 }: {
   onClick: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
 }) {
-  const css = useMemo(() => {
-    const ns = namespace('Blocks')
-    return { root: ns() }
-  }, [])
+  const css = getCss('Blocks', (ns) => ({
+    root: ns()
+  }))
   const state = useEmailBuilderState()
   const setState = useSetEmailBuilderState()
   const onMouseLeave = useCallback(() => {
@@ -118,15 +117,12 @@ function Columns({
     return false
   }, [block, selectedId])
 
-  const css = useMemo(() => {
-    const ns = namespace('Columns')
-    return {
-      root: ns(),
-      grid: ns('grid'),
-      column: ns('column'),
-      notAllowed: ns('not-allowed')
-    }
-  }, [])
+  const css = getCss('Columns', (ns) => ({
+    root: ns(),
+    grid: ns('grid'),
+    column: ns('column'),
+    notAllowed: ns('not-allowed')
+  }))
 
   const { columns } = block.attrs
 

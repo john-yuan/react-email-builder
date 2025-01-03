@@ -1,5 +1,5 @@
-import React, { useMemo } from 'react'
-import { namespace } from '../../utils'
+import React from 'react'
+import { getCss } from '../../utils'
 import type { SvgSymbolName } from '../SvgSymbols/symbols'
 
 export interface Props {
@@ -8,14 +8,11 @@ export interface Props {
 }
 
 export function Icon({ name, spinning }: Props) {
-  const css = useMemo(() => {
-    const ns = namespace('Icon')
-    return {
-      root: ns(),
-      spinning: ns('spinning')
-    }
-  }, [])
   const id = '#reb-icon-' + name
+  const css = getCss('Icon', (ns) => ({
+    root: ns(),
+    spinning: ns('spinning')
+  }))
   return (
     <svg className={spinning ? css.spinning : css.root}>
       <use xlinkHref={id} />

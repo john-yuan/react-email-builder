@@ -1,12 +1,7 @@
 import clsx from 'clsx'
-import React, { useCallback, useMemo } from 'react'
+import React, { useCallback } from 'react'
 import { useEmailBuilderConfig, useSetEmailBuilderState } from '../../hooks'
-import {
-  createBlock,
-  createPlaceholder,
-  namespace,
-  varsClass
-} from '../../utils'
+import { createBlock, createPlaceholder, getCss, varsClass } from '../../utils'
 import type { EmailBuilderBlock, EmailBuilderBlockConfig } from '../../types'
 import type { ColumnsBlockAttrs } from '../../blocks/columns/types'
 
@@ -25,18 +20,15 @@ export function BlockIcons() {
 }
 
 function useCss() {
-  return useMemo(() => {
-    const ns = namespace('BlockIcons')
-    return {
-      root: ns(),
-      item: ns('item'),
-      dragged: ns('item-dragged'),
-      dragging: ns('item-dragging'),
-      icon: ns('icon'),
-      name: ns('name'),
-      body: ns('body')
-    }
-  }, [])
+  return getCss('BlockIcons', (ns) => ({
+    root: ns(),
+    item: ns('item'),
+    dragged: ns('item-dragged'),
+    dragging: ns('item-dragging'),
+    icon: ns('icon'),
+    name: ns('name'),
+    body: ns('body')
+  }))
 }
 
 function BlockIcon({
