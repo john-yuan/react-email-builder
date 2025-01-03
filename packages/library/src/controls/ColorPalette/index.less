@@ -1,0 +1,132 @@
+.REB-ColorPalette {
+  background: #000;
+  width: 266px;
+
+  .react-colorful__saturation {
+    border-radius: 0;
+    border-bottom-width: 8px;
+  }
+
+  .react-colorful__hue {
+    border-radius: 0;
+    margin: 12px;
+    margin-top: 8px;
+    height: 16px;
+  }
+
+  .react-colorful__hue-pointer {
+    border-radius: 3px;
+    width: 12px;
+    height: 20px;
+    cursor: ew-resize;
+  }
+
+  .react-colorful__saturation-pointer {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+  }
+
+  &-colors {
+    gap: 5px;
+    padding: 10px;
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    background: #fff;
+  }
+
+  &-color {
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    box-sizing: border-box;
+    padding: 1px;
+    margin: 0 auto;
+
+    div {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  &-active {
+    border: 1px solid rgba(0, 0, 0, 0.5);
+  }
+
+  &-form {
+    display: flex;
+    padding: 2px 10px 10px 10px;
+    background: #fff;
+    gap: 10px;
+  }
+
+  &-mode {
+    flex-grow: 0;
+    flex-shrink: 0;
+    font-size: 13px;
+    background: #eee;
+    padding: 2px;
+    border-radius: 4px;
+    display: flex;
+    gap: 4px;
+    color: #666;
+
+    div {
+      line-height: 1;
+      font-size: 12px;
+      padding: 4px;
+      border-radius: 4px;
+      font-weight: bold;
+      cursor: pointer;
+
+      &:hover {
+        color: #000;
+      }
+    }
+  }
+
+  &-input {
+    flex-grow: 1;
+    flex-shrink: 1;
+
+    input {
+      display: block;
+      box-sizing: border-box;
+      width: 100%;
+      height: 24px;
+      line-height: 22px;
+      border: 1px solid var(--reb-control-border-color);
+      border-radius: 4px;
+      outline: 0;
+      padding: 0 6px;
+      font-size: 13px;
+
+      &:focus {
+        border-color: var(--reb-control-active-border-color);
+      }
+    }
+  }
+
+  &-preview {
+    flex-grow: 0;
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    box-sizing: border-box;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 2px;
+
+    div {
+      width: 20px;
+      height: 20px;
+      margin: 1px;
+      border-radius: 2px;
+    }
+  }
+
+  &-selected {
+    background: #fff;
+    color: #000;
+  }
+}
