@@ -1,12 +1,12 @@
 import clsx from 'clsx'
-import React, { memo, useMemo } from 'react'
+import React, { memo, useCallback, useMemo } from 'react'
 import type {
   EmailBuilderBlock,
   EmailBuilderConfig,
   EmailBuilderState
 } from '../../types'
 import { namespace } from '../../utils'
-import { useEmailBuilderConfig } from '../../hooks'
+import { useEmailBuilderConfig, useSetEmailBuilderState } from '../../hooks'
 import { DropArea } from '../DropArea'
 import { Placeholder } from '../../blocks/placeholder'
 
@@ -109,6 +109,22 @@ export function Block({
   const { sectionStyle } = block
   const config = useEmailBuilderConfig()
 
+  const setState = useSetEmailBuilderState()
+  const onClickBlock = useCallback(
+    (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+      e.stopPropagation()
+      setState((prev) => {
+        return prev.selectedId === block.id
+          ? prev
+          : {
+              ...prev,
+              selectedId: block.id
+            }
+      })
+    },
+    [block, setState]
+  )
+
   return (
     <div
       className={clsx(css.section, {
@@ -119,6 +135,7 @@ export function Block({
       }}
     >
       <div
+        onClick={onClickBlock}
         className={clsx(css.block, {
           [css.dropArea]: dragging && showDropArea,
           [css.dragover]: dragover,

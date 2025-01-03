@@ -12,7 +12,11 @@ import type { ColumnsBlockAttrs } from '../../blocks/columns/types'
 
 const Block = memo(RawBlock)
 
-export function Blocks() {
+export function Blocks({
+  onClick
+}: {
+  onClick: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
+}) {
   const css = useMemo(() => {
     const ns = namespace('Blocks')
     return { root: ns() }
@@ -30,6 +34,7 @@ export function Blocks() {
   return (
     <div
       className={css.root}
+      onClick={onClick}
       onMouseLeave={state.draggingType ? onMouseLeave : undefined}
     >
       <List
