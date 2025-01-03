@@ -5,15 +5,13 @@ import { createBlock, createPlaceholder, getCss, varsClass } from '../../utils'
 import type { EmailBuilderBlock, EmailBuilderBlockConfig } from '../../types'
 import type { ColumnsBlockAttrs } from '../../blocks/columns/types'
 
-type CssNames = ReturnType<typeof useCss>
-
 export function BlockIcons() {
   const { blocks } = useEmailBuilderConfig()
   const css = useCss()
   return (
     <div className={css.root}>
       {blocks.map((block) => (
-        <BlockIcon key={block.type} css={css} block={block} />
+        <BlockIcon key={block.type} block={block} />
       ))}
     </div>
   )
@@ -33,11 +31,10 @@ function useCss() {
 
 function BlockIcon({
   block,
-  css
 }: {
   block: EmailBuilderBlockConfig
-  css: CssNames
 }) {
+  const css = useCss()
   const type = block.type
   const config = useEmailBuilderConfig()
   const setState = useSetEmailBuilderState()
