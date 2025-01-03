@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import React, { useMemo } from 'react'
 import type { EmailBuilderProps } from '../../types'
 import {
@@ -8,7 +9,7 @@ import {
 import { namespace, varsClass } from '../../utils'
 import { SvgSymbols } from '../SvgSymbols'
 import { Sidebar } from '../Sidebar'
-import clsx from 'clsx'
+import { MainArea } from '../MainArea'
 
 export function EmailBuilder({
   config,
@@ -21,22 +22,13 @@ export function EmailBuilder({
   const css = useMemo(() => {
     const ns = namespace('EmailBuilder')
     return {
-      root: clsx(varsClass(), ns()),
-      left: clsx(ns('aside'), ns('aside-left')),
-      right: clsx(ns('aside'), ns('aside-right')),
-      main: ns('main')
+      root: clsx(varsClass(), ns())
     }
   }, [])
 
   const rightSidebar = sidebarPosition === 'right'
-
-  const aside = (
-    <div className={rightSidebar ? css.right : css.left}>
-      <Sidebar />
-    </div>
-  )
-
-  const main = <div className={css.main}></div>
+  const sidebar = <Sidebar right={rightSidebar} />
+  const main = <MainArea />
 
   return (
     <EmailBuilderConfigContext.Provider value={config}>
@@ -46,11 +38,11 @@ export function EmailBuilder({
             {rightSidebar ? (
               <>
                 {main}
-                {aside}
+                {sidebar}
               </>
             ) : (
               <>
-                {aside}
+                {sidebar}
                 {main}
               </>
             )}

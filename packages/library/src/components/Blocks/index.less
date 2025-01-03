@@ -1,0 +1,49 @@
+.REB-Columns {
+  &-grid {
+    display: grid;
+
+    &-1 {
+      grid-template-columns: 1fr;
+    }
+
+    &-2 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    &-3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    &-4 {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    &-5 {
+      grid-template-columns: repeat(5, 1fr);
+    }
+
+    &-6 {
+      grid-template-columns: repeat(6, 1fr);
+    }
+  }
+
+  &-not-allowed {
+    position: relative;
+    z-index: 1;
+  }
+
+  &-column {
+    min-width: 0;
+    min-height: 0;
+
+    .REB-Block {
+      z-index: 5;
+      position: relative;
+    }
+
+    .REB-Block-dragover,
+    .REB-Block-active {
+      z-index: 6;
+    }
+  }
+}

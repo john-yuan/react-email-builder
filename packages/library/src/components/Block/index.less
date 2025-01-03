@@ -1,0 +1,53 @@
+.REB-Block {
+  position: relative;
+  z-index: 1;
+  max-width: 600px;
+  margin: 0 auto;
+  word-break: break-word;
+
+  &:hover {
+    outline: 1px dashed var(--reb-block-hover-outline-color);
+    outline-offset: -1px;
+  }
+
+  &-selected:hover,
+  &-selected {
+    outline: 2px solid var(--reb-block-selected-outline-color);
+    outline-offset: -1px;
+  }
+
+  &-section {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  &-section-full {
+    max-width: unset;
+  }
+
+  &-active {
+    z-index: 2;
+  }
+
+  &-dragover {
+    z-index: 2;
+  }
+
+  &-drop-area {
+    min-height: 10px;
+    outline: none;
+
+    &:hover {
+      outline: none;
+    }
+  }
+
+  &-content {
+    word-break: break-word;
+  }
+
+  &-drop-area &-content {
+    position: relative;
+    z-index: 1;
+  }
+}

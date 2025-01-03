@@ -15,6 +15,9 @@ export interface EmailBuilderConfig {
 export interface EmailBuilderBlockConfig<Attrs extends object = any> {
   /**
    * Specify the block type. The block type must be unique.
+   *
+   * Please note that the type of custom block cannot be `placeholder` or
+   * `columns`. They are used internally.
    */
   type: string
 
@@ -31,7 +34,10 @@ export interface EmailBuilderBlockConfig<Attrs extends object = any> {
   /**
    * The component to render the block in the canvas.
    */
-  blockComponent: React.ComponentType<{ block: EmailBuilderBlock<Attrs> }>
+  blockComponent: React.ComponentType<{
+    block: EmailBuilderBlock<Attrs>
+    selected?: boolean
+  }>
 
   /**
    * The component to render the block editor.
@@ -48,11 +54,27 @@ export interface EmailBuilderBlockConfig<Attrs extends object = any> {
 export type FileUploadFunction = (file: File) => Promise<{ url: string }>
 
 export interface EmailBuilderBlockStyle {
+  /**
+   * The block background color.
+   */
   bgColor?: string
+
+  /**
+   * The block padding in pixel: `[top, right, bottom, left]`.
+   */
+  padding?: number[]
 }
 
 export interface EmailBuilderSectionStyle {
+  /**
+   * The section background color.
+   */
   bgColor?: string
+
+  /**
+   * Set to `yes` make the section full-width.
+   */
+  full?: 'yes' | 'no'
 }
 
 export interface EmailBuilderBlock<Attrs extends object = any> {
@@ -76,7 +98,18 @@ export interface EmailBuilderProps {
   sidebarPosition?: 'left' | 'right'
 }
 
+export interface EmailBuilderPageStyle {
+  bgColor?: string
+  paddingTop?: number
+  paddingBottom?: number
+}
+
 export interface EmailBuilderState {
+  /**
+   * The page style.
+   */
+  pageStyle?: EmailBuilderPageStyle
+
   /**
    * The blocks on the canvas.
    */

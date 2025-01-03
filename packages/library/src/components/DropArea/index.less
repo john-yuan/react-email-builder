@@ -1,0 +1,78 @@
+.REB-DropArea {
+  --border-width: 2px;
+
+  z-index: 2;
+  position: absolute;
+  top: 1px;
+  right: 0;
+  bottom: 1px;
+  left: 0;
+
+  &-dragover {
+    z-index: 3;
+  }
+
+  &-border {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    border: var(--border-width) dashed var(--reb-drop-area-border-color);
+  }
+
+  &-active {
+    border: var(--border-width) dashed var(--reb-drop-area-active-border-color);
+  }
+
+  &-top {
+    border-top-width: 4px;
+    border-top-style: solid;
+  }
+
+  &-bottom {
+    border-bottom-width: 4px;
+    border-bottom-style: solid;
+  }
+
+  &-text {
+    --offset: -8px;
+    position: absolute;
+    z-index: 2;
+    display: none;
+    height: 20px;
+    background: transparent;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 0;
+
+    span {
+      display: inline-block;
+      background: var(--reb-drop-area-active-border-color);
+      color: var(--reb-drop-area-text-color);
+      padding: 0 8px;
+      font-size: 12px;
+      line-height: 20px;
+      border-radius: 10px;
+    }
+
+    &-visible {
+      display: block;
+    }
+
+    &-top {
+      top: var(--offset);
+    }
+
+    &-bottom {
+      bottom: var(--offset);
+    }
+
+    &-center {
+      top: 50%;
+      transform: translateY(-10px);
+    }
+  }
+}

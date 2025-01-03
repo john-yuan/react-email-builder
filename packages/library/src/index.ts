@@ -1,5 +1,14 @@
 export { EmailBuilder } from './components/EmailBuilder'
-export { generateId, createBlock } from './utils'
+
+export {
+  generateId,
+  createBlock,
+  createBaseBlock,
+  createPlaceholder,
+  namespace,
+  varsClass
+} from './utils'
+
 export { columnsBlock } from './blocks/columns'
 export { buttonBlock } from './blocks/button'
 export { dividerBlock } from './blocks/divider'

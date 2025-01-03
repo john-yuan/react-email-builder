@@ -3,6 +3,7 @@ import type { EmailBuilderConfig, EmailBuilderState } from 'react-email-builder'
 import {
   buttonBlock,
   columnsBlock,
+  createBlock,
   dividerBlock,
   EmailBuilder,
   imageBlock,
@@ -11,23 +12,29 @@ import {
 } from 'react-email-builder'
 import 'react-email-builder/styles.css'
 
-export default function App() {
-  const config = useMemo<EmailBuilderConfig>(
-    () => ({
-      blocks: [
-        columnsBlock(),
-        buttonBlock(),
-        dividerBlock(),
-        textBlock(),
-        imageBlock(),
-        spacerBlock()
-      ]
-    }),
-    []
-  )
+const config: EmailBuilderConfig = {
+  blocks: [
+    columnsBlock(),
+    buttonBlock(),
+    dividerBlock(),
+    textBlock(),
+    imageBlock(),
+    spacerBlock()
+  ]
+}
 
+export default function App() {
   const [state, setState] = useState<EmailBuilderState>({
-    blocks: []
+    pageStyle: {
+      paddingTop: 32,
+      paddingBottom: 32,
+      bgColor: '#ffffff'
+    },
+    blocks: [
+      createBlock(config, 'button'),
+      createBlock(config, 'spacer'),
+      createBlock(config, 'divider')
+    ]
   })
 
   const editorStyle = useMemo<React.CSSProperties>(

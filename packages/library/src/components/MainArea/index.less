@@ -1,19 +1,10 @@
-.REB-Sidebar {
-  width: 300px;
-  flex-grow: 0;
-  flex-shrink: 0;
+.REB-MainArea {
+  flex-grow: 1;
+  flex-shrink: 1;
   min-width: 0;
-  box-sizing: border-box;
+
   display: flex;
   flex-direction: column;
-
-  &-left {
-    border-right: 1px solid var(--reb-border-color);
-  }
-
-  &-right {
-    border-left: 1px solid var(--reb-border-color);
-  }
 
   &-header {
     height: var(--reb-header-height);
@@ -28,5 +19,12 @@
     flex-shrink: 1;
     min-height: 0;
     overflow: auto;
+    background: var(--reb-canvas-bg);
+  }
+
+  &-email-page {
+    margin: 20px;
+    min-height: calc(100% - 40px);
+    box-sizing: border-box;
   }
 }

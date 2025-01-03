@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
-import type { SvgSymbolName } from '../SvgSymbols/symbols'
 import { namespace } from '../../utils'
+import type { SvgSymbolName } from '../SvgSymbols/symbols'
 
 export interface Props {
   name: SvgSymbolName

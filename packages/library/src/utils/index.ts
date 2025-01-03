@@ -1,4 +1,5 @@
-import type { EmailBuilderBlock } from '../types'
+import type { PlaceholderAttrs } from '../blocks/placeholder/types'
+import type { EmailBuilderBlock, EmailBuilderConfig } from '../types'
 
 let counter = 0
 let prefix: string | null = null
@@ -19,17 +20,42 @@ export function generateId() {
   return prefix + '-' + time + '-' + counter
 }
 
-export function createBlock<Attrs extends object = Record<string, string>>(
-  type: string,
-  attrs?: Attrs
-): EmailBuilderBlock<Attrs> {
+export function createBaseBlock(type: string): EmailBuilderBlock {
   return {
     id: generateId(),
     type,
-    attrs: attrs || ({} as any),
-    blockStyle: {},
+    attrs: {},
+    blockStyle: {
+      padding: [10, 20, 10, 20]
+    },
     sectionStyle: {}
   }
+}
+
+export function createPlaceholder(
+  attrs?: PlaceholderAttrs
+): EmailBuilderBlock<PlaceholderAttrs> {
+  const block = createBaseBlock(
+    'placeholder'
+  ) as EmailBuilderBlock<PlaceholderAttrs>
+
+  block.attrs = attrs || {}
+
+  return block
+}
+
+export function createBlock(
+  config: EmailBuilderConfig,
+  type: string
+): EmailBuilderBlock {
+  const block = config.blocks.find((b) => b.type === type)
+  const base: EmailBuilderBlock = createBaseBlock(type)
+
+  if (block && block.createBlock) {
+    return block.createBlock(base)
+  }
+
+  return base
 }
 
 export function namespace(module: string) {

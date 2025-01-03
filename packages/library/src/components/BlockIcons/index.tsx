@@ -1,8 +1,14 @@
-import React, { useCallback, useMemo } from 'react'
 import clsx from 'clsx'
+import React, { useCallback, useMemo } from 'react'
 import { useEmailBuilderConfig, useSetEmailBuilderState } from '../../hooks'
-import { namespace, varsClass } from '../../utils'
-import type { EmailBuilderBlockConfig } from '../../types'
+import {
+  createBlock,
+  createPlaceholder,
+  namespace,
+  varsClass
+} from '../../utils'
+import type { EmailBuilderBlock, EmailBuilderBlockConfig } from '../../types'
+import type { ColumnsBlockAttrs } from '../../blocks/columns/types'
 
 type CssNames = ReturnType<typeof useCss>
 
@@ -41,6 +47,7 @@ function BlockIcon({
   css: CssNames
 }) {
   const type = block.type
+  const config = useEmailBuilderConfig()
   const setState = useSetEmailBuilderState()
   const onMouseDown = useCallback(
     (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -51,6 +58,8 @@ function BlockIcon({
       const startTop = rect.top
       const startLeft = rect.left
       const dragging = dragged.cloneNode(true) as HTMLDivElement
+
+      let placeholder: EmailBuilderBlock | null = null
 
       const updatePosition = (top: number, left: number) => {
         dragging.style.transform = `translate3d(${left}px, ${top}px, 0) rotate(-10deg)`
@@ -65,6 +74,27 @@ function BlockIcon({
         updatePosition(startTop, startLeft)
         body.appendChild(dragging)
         body.classList.add(css.body)
+
+        setState((prev) => {
+          let blocks = prev.blocks
+
+          if (
+            !blocks.length ||
+            blocks[blocks.length - 1].type !== 'placeholder'
+          ) {
+            placeholder = createPlaceholder({ end: true })
+            blocks = [...blocks, placeholder]
+          }
+
+          return {
+            ...prev,
+            blocks,
+            draggingType: type,
+            selectedId: undefined,
+            dragoverId: undefined,
+            dragover: false
+          }
+        })
       }
 
       let mousemove: ((e: MouseEvent) => void) | null = (e: MouseEvent) => {
@@ -92,6 +122,67 @@ function BlockIcon({
         }
 
         document.body.classList.remove(css.body)
+
+        setState((prev) => {
+          let added = false
+
+          const addBlock = (blocks: EmailBuilderBlock[]) => {
+            const newBlocks: EmailBuilderBlock[] = []
+
+            blocks.forEach((block) => {
+              if (block.id === prev.dragoverId) {
+                const newBlock = createBlock(config, type)
+
+                if (block.type === 'placeholder') {
+                  newBlocks.push(newBlock)
+                } else if (prev.dragover === 'top') {
+                  newBlocks.push(newBlock)
+                  newBlocks.push(block)
+                } else if (prev.dragover === 'bottom') {
+                  newBlocks.push(block)
+                  newBlocks.push(newBlock)
+                }
+
+                added = true
+              } else if (block.type === 'columns') {
+                if (added) {
+                  newBlocks.push(block)
+                } else {
+                  const oldCols = block as EmailBuilderBlock<ColumnsBlockAttrs>
+                  const newCols: EmailBuilderBlock<ColumnsBlockAttrs> = {
+                    ...oldCols,
+                    attrs: {
+                      ...oldCols.attrs,
+                      columns: oldCols.attrs.columns.map((col) => ({
+                        ...col,
+                        blocks: addBlock(col.blocks)
+                      }))
+                    }
+                  }
+                  newBlocks.push(newCols)
+                }
+              } else {
+                newBlocks.push(block)
+              }
+            })
+
+            return newBlocks
+          }
+
+          let nextBlocks = addBlock(prev.blocks)
+
+          if (placeholder) {
+            nextBlocks = nextBlocks.filter((b) => b !== placeholder)
+          }
+
+          return {
+            ...prev,
+            blocks: nextBlocks,
+            draggingType: undefined,
+            dragover: undefined,
+            dragoverId: undefined
+          }
+        })
       }
 
       dragstart()
@@ -99,7 +190,7 @@ function BlockIcon({
       window.addEventListener('mousemove', mousemove, true)
       window.addEventListener('mouseup', dragend, true)
     },
-    [setState, type, css]
+    [setState, type, config, css]
   )
 
   return (

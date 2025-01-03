@@ -1,18 +1,28 @@
 import React from 'react'
-import type { EmailBuilderBlock, EmailBuilderBlockConfig } from '../../types'
-import type { ColumnsBlockAttrs } from './types'
 import { Icon } from '../../components/Icon'
 import { ColumnsBlock } from './ColumnsBlock'
 import { ColumnsBlockEditor } from './ColumnsBlockEditor'
+import { createPlaceholder, generateId } from '../../utils'
+import type { EmailBuilderBlock, EmailBuilderBlockConfig } from '../../types'
+import type { Column, ColumnsBlockAttrs } from './types'
 
 export function columnsBlock(): EmailBuilderBlockConfig<ColumnsBlockAttrs> {
+  const createColumn = (): Column => {
+    return {
+      id: generateId(),
+      style: {},
+      blocks: [createPlaceholder({ inColumn: true })]
+    }
+  }
+
   return {
     type: 'columns',
     name: 'Columns',
     icon: React.createElement(Icon, { name: 'columns' }),
     createBlock: (base) => {
       const block = base as any as EmailBuilderBlock<ColumnsBlockAttrs>
-      block.attrs = { blocks: [] }
+      block.attrs = { columns: [createColumn(), createColumn()] }
+      block.blockStyle.padding = [20, 0, 20, 0]
       return block
     },
     blockComponent: ColumnsBlock,
