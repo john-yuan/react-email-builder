@@ -12,7 +12,21 @@ export function buttonBlock(): EmailBuilderBlockConfig<ButtonBlockAttrs> {
     icon: React.createElement(Icon, { name: 'button' }),
     createBlock: (base) => {
       const block = base as any as EmailBuilderBlock<ButtonBlockAttrs>
-      block.attrs = { text: 'Button' }
+      block.attrs = {
+        text: 'Button',
+        padding: [10, 25, 10, 25],
+        bgColor: '#117CEE',
+        color: '#FFFFFF',
+        align: 'center',
+        block: 'no',
+        borderRadius: 3,
+        fontSize: 14,
+        fontWeight: 'normal',
+        letterSpacing: 0,
+        lineHeight: 120,
+        target: '_blank',
+        textDecoration: 'none'
+      }
       return block
     },
     blockComponent: ButtonBlock,

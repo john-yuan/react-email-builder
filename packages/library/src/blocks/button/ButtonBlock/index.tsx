@@ -9,9 +9,38 @@ export interface Props {
 
 export function ButtonBlock({ block }: Props) {
   const style = useBlockStyle(block)
+  const attrs = block.attrs
+  const p = attrs.padding || []
+
   return (
-    <div style={style}>
-      {block.type} - {block.id}
+    <div style={{ ...style, textAlign: attrs.align }}>
+      <a
+        style={{
+          display: attrs.block === 'yes' ? 'block' : 'inline-block',
+          paddingTop: p[0],
+          paddingRight: p[1],
+          paddingBottom: p[2],
+          paddingLeft: p[3],
+          backgroundColor: attrs.bgColor,
+          color: attrs.color,
+          borderRadius: attrs.borderRadius,
+          fontFamily: attrs.fontFamily,
+          fontSize: attrs.fontSize,
+          lineHeight: attrs.lineHeight == null ? '' : attrs.lineHeight + '%',
+          fontWeight: attrs.fontWeight,
+          letterSpacing: attrs.letterSpacing,
+          cursor: 'pointer',
+          wordBreak: 'break-word',
+          textDecoration: attrs.textDecoration || 'none'
+        }}
+        href={attrs.url}
+        target={attrs.target}
+        onClick={(e) => {
+          e.preventDefault()
+        }}
+      >
+        {attrs.text}
+      </a>
     </div>
   )
 }

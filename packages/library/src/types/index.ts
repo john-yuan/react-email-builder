@@ -36,7 +36,6 @@ export interface EmailBuilderBlockConfig<Attrs extends object = any> {
    */
   blockComponent: React.ComponentType<{
     block: EmailBuilderBlock<Attrs>
-    selected?: boolean
   }>
 
   /**

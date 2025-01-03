@@ -14,12 +14,10 @@ const BlockContent = memo(
   ({
     className,
     config,
-    block,
-    selected
+    block
   }: {
     className?: string
     block: EmailBuilderBlock
-    selected?: boolean
     config: EmailBuilderConfig
   }) => {
     let content = null
@@ -30,9 +28,7 @@ const BlockContent = memo(
       const Component = config.blocks.find(
         (b) => b.type === block.type
       )?.blockComponent
-      content = Component ? (
-        <Component block={block} selected={selected} />
-      ) : null
+      content = Component ? <Component block={block} /> : null
     }
 
     return <div className={className}>{content}</div>
@@ -147,12 +143,7 @@ export function Block({
         {children ? (
           children
         ) : (
-          <BlockContent
-            block={block}
-            selected={selected}
-            className={css.content}
-            config={config}
-          />
+          <BlockContent block={block} className={css.content} config={config} />
         )}
         {showDropArea ? (
           <DropArea block={block} dragover={dragover} role={role} />
