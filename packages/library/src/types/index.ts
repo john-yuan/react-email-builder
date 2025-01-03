@@ -135,4 +135,9 @@ export interface EmailBuilderState {
    * it means no block is selected.
    */
   selectedId?: string
+
+  /**
+   * The current selected tab in sidebar.
+   */
+  tab?: 'blocks' | 'settings' | 'page'
 }
