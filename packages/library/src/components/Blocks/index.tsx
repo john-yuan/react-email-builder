@@ -151,25 +151,25 @@ function Columns({
             const style = column.style || {}
             const p = style.padding || []
             return (
-              <div
-                key={column.id}
-                className={css.column}
-                style={{
-                  backgroundColor: style.bgColor,
-                  paddingTop: p[0],
-                  paddingRight: p[1],
-                  paddingBottom: p[2],
-                  paddingLeft: p[3]
-                }}
-              >
-                <List
-                  inColumns
-                  blocks={column.blocks}
-                  draggingType={draggingType}
-                  dragover={dragover}
-                  dragoverId={dragoverId}
-                  selectedId={selectedId}
-                />
+              <div key={column.id} className={css.column}>
+                <div
+                  style={{
+                    backgroundColor: style.bgColor,
+                    paddingTop: p[0],
+                    paddingRight: p[1],
+                    paddingBottom: p[2],
+                    paddingLeft: p[3]
+                  }}
+                >
+                  <List
+                    inColumns
+                    blocks={column.blocks}
+                    draggingType={draggingType}
+                    dragover={dragover}
+                    dragoverId={dragoverId}
+                    selectedId={selectedId}
+                  />
+                </div>
               </div>
             )
           })}
