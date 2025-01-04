@@ -110,7 +110,8 @@ export function Block({
           ? prev
           : {
               ...prev,
-              selectedId: block.id
+              selectedId: block.id,
+              tab: 'settings'
             }
       })
     },
