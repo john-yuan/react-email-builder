@@ -178,13 +178,15 @@ function hex2rgb(color: string) {
   if (hex) {
     const num = (s: string) => parseInt(s, 16) || 0
     return (
+      'rgb(' +
       num(hex.slice(1, 3)) +
       ', ' +
       num(hex.slice(3, 5)) +
       ', ' +
-      num(hex.slice(5))
+      num(hex.slice(5)) +
+      ')'
     )
   }
 
-  return '0, 0, 0'
+  return 'rgb(0, 0, 0)'
 }
