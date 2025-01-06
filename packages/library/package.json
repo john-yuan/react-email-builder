@@ -36,6 +36,7 @@
     "lessc-watch": "^1.2.0",
     "lint-staged": "^15.2.0",
     "prettier": "3.2.4",
+    "svgo": "^3.3.2",
     "typescript": "5.3.3"
   },
   "license": "MIT"
