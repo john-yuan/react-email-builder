@@ -6,6 +6,7 @@ import { TextInput } from '../../../controls/TextInput'
 import { useBlockAttrsEditor } from '../../../hooks'
 import { ColorPicker } from '../../../controls/ColorPicker'
 import { SizeInput } from '../../../controls/SizeInput'
+import PaddingInput from '../../../controls/PaddingInput'
 
 export interface Props {
   block: EmailBuilderBlock<ButtonBlockAttrs>
@@ -92,6 +93,12 @@ export function ButtonBlockEditor({ block }: Props) {
           }}
         />
       </Field>
+      <PaddingInput
+        value={attrs.padding}
+        onChange={(padding) => {
+          setAttrs({ padding })
+        }}
+      />
     </>
   )
 }
