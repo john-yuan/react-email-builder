@@ -1,0 +1,80 @@
+.REB-SizeInput {
+  display: flex;
+
+  &-input-box {
+    display: flex;
+  }
+
+  &-input {
+    position: relative;
+    z-index: 2;
+    input {
+      height: 32px;
+      box-sizing: border-box;
+      border: 1px solid var(--reb-control-border-color);
+      padding: 0 3px;
+      width: 48px;
+      text-align: center;
+
+      &:focus {
+        outline: 1px solid var(--reb-control-active-border-color);
+        outline-offset: -1px;
+      }
+    }
+  }
+
+  &-unit {
+    border: 1px solid var(--reb-control-border-color);
+    line-height: 30px;
+    height: 32px;
+    border-left: 0;
+    padding: 0 8px;
+    box-sizing: border-box;
+    background: var(--reb-control-disabled-color);
+  }
+
+  &-actions {
+    display: flex;
+    border: 1px solid var(--reb-control-border-color);
+    line-height: 30px;
+    height: 32px;
+    box-sizing: border-box;
+    margin-left: 5px;
+  }
+
+  &-action {
+    width: 30px;
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+
+    &:hover {
+      background: var(--reb-control-hover-color);
+    }
+
+    &:active {
+      background: var(--reb-control-active-color);
+    }
+  }
+
+  &-disabled,
+  &-disabled input {
+    cursor: not-allowed;
+    background: var(--reb-control-disabled-color);
+    color: #888;
+
+    &:hover,
+    &:active {
+      background: var(--reb-control-disabled-color);
+    }
+  }
+
+  &-disabled input {
+    color: #888;
+  }
+
+  &-sep {
+    width: 1px;
+    background-color: var(--reb-control-border-color);
+  }
+}

@@ -1,6 +1,5 @@
 .REB-vars {
   --reb-border-color: #e5e5e5;
-  --reb-control-border-color: #d4d4d4;
   --reb-header-height: 48px;
   --reb-icon-dragged-bg-color: #eee;
 
@@ -12,6 +11,12 @@
   --reb-drop-area-border-color: #ddd;
   --reb-drop-area-active-border-color: rgb(17, 110, 224);
   --reb-drop-area-text-color: #fff;
+
+  --reb-control-border-color: #d4d4d4;
+  --reb-control-active-border-color: #444;
+  --reb-control-hover-color: #f5f5f5;
+  --reb-control-disabled-color: #f1f1f1;
+  --reb-control-active-color: #eee;
 
   color: #4a4a4a;
   font-size: 14px;
@@ -32,4 +37,5 @@
 @import './controls/Field/index.less';
 @import './controls/FormSection/index.less';
 @import './controls/TextInput/index.less';
+@import './controls/SizeInput/index.less';
 @import './blocks/placeholder/index.less';
