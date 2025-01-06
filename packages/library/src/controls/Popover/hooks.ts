@@ -118,11 +118,9 @@ function refresh(info: InfoObject) {
 
     window.addEventListener('click', onClick, true)
 
-    console.log('setup')
     info.cleanup = () => {
       stopUpdate()
       window.removeEventListener('click', onClick, true)
-      console.log('cleared')
     }
   }
 }
