@@ -3,10 +3,12 @@ import type { EmailBuilderBlock } from '../../../types'
 import type { ButtonBlockAttrs } from '../types'
 import { Field } from '../../../controls/Field'
 import { TextInput } from '../../../controls/TextInput'
-import { useBlockAttrsEditor } from '../../../hooks'
+import { useBlockAttrsEditor, useEmailBuilderConfig } from '../../../hooks'
 import { ColorPicker } from '../../../controls/ColorPicker'
 import { SizeInput } from '../../../controls/SizeInput'
-import PaddingInput from '../../../controls/PaddingInput'
+import { PaddingInput } from '../../../controls/PaddingInput'
+import { Select } from '../../../controls/Select'
+import { getDefaultFonts } from '../../../utils'
 
 export interface Props {
   block: EmailBuilderBlock<ButtonBlockAttrs>
@@ -15,6 +17,9 @@ export interface Props {
 export function ButtonBlockEditor({ block }: Props) {
   const attrs = block.attrs
   const setAttrs = useBlockAttrsEditor(block)
+  const { fonts } = useEmailBuilderConfig()
+  const fontList = fonts || getDefaultFonts()
+
   return (
     <>
       <Field label="Text" vertical>
@@ -62,6 +67,52 @@ export function ButtonBlockEditor({ block }: Props) {
           }}
         />
       </Field>
+      <Field label="Font family">
+        <Select
+          options={fontList}
+          value={attrs.fontFamily}
+          onChange={(fontFamily) => {
+            setAttrs({ fontFamily })
+          }}
+        />
+      </Field>
+      <Field label="Font weight">
+        <Select
+          options={[
+            { value: 'normal', label: 'Normal' },
+            { value: 'bold', label: 'Bold' }
+          ]}
+          value={attrs.fontWeight}
+          onChange={(fontWeight) => {
+            setAttrs({ fontWeight: fontWeight as any })
+          }}
+        />
+      </Field>
+      <Field label="Alignment">
+        <Select
+          options={[
+            { value: 'left', label: 'Left' },
+            { value: 'right', label: 'Right' },
+            { value: 'center', label: 'Center' }
+          ]}
+          value={attrs.align}
+          onChange={(align) => {
+            setAttrs({ align: align as any })
+          }}
+        />
+      </Field>
+      <Field label="Width">
+        <Select
+          options={[
+            { value: 'yes', label: 'Full' },
+            { value: 'no', label: 'Auto' }
+          ]}
+          value={attrs.block}
+          onChange={(block) => {
+            setAttrs({ block: block as any })
+          }}
+        />
+      </Field>
       <Field label="Border radius">
         <SizeInput
           unit="px"
@@ -99,6 +150,18 @@ export function ButtonBlockEditor({ block }: Props) {
           setAttrs({ padding })
         }}
       />
+      <Field label="Open in new tab">
+        <Select
+          options={[
+            { value: '_blank', label: 'Yes' },
+            { value: '_self', label: 'No' }
+          ]}
+          value={attrs.target}
+          onChange={(target) => {
+            setAttrs({ target: target as any })
+          }}
+        />
+      </Field>
     </>
   )
 }

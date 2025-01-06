@@ -27,7 +27,7 @@ function Editor({
 }) {
   const EditorComponent = blockConfig.editorComponent
   return (
-    <div>
+    <div style={{ paddingBottom: 64 }}>
       <div style={{ padding: 16 }}>{blockConfig.name}</div>
       {EditorComponent ? (
         <FormSection name="Attributes" defaultOpen>

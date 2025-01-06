@@ -14,6 +14,11 @@ export interface EmailBuilderConfig {
    * The function used to upload image files.
    */
   uploadImage?: FileUploadFunction
+
+  fonts?: {
+    value: string
+    label: string
+  }[]
 }
 
 export interface EmailBuilderBlockConfig<Attrs extends object = any> {
@@ -51,7 +56,10 @@ export interface EmailBuilderBlockConfig<Attrs extends object = any> {
    * Specify the function to create a new block. You can modify the `base` block
    * passed in (which contains all the common fields) directly and return it.
    */
-  createBlock?: (base: EmailBuilderBlock<any>) => EmailBuilderBlock<Attrs>
+  createBlock?: (
+    base: EmailBuilderBlock<any>,
+    config: EmailBuilderConfig
+  ) => EmailBuilderBlock<Attrs>
 }
 
 export type FileUploadFunction = (file: File) => Promise<{ url: string }>

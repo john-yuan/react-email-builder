@@ -57,7 +57,7 @@ export function createBlock(
   const base: EmailBuilderBlock = createBaseBlock(type)
 
   if (block && block.createBlock) {
-    return block.createBlock(base)
+    return block.createBlock(base, config)
   }
 
   return base
@@ -132,4 +132,62 @@ export function getCss<T extends object = any>(
     mCss[module] = css
   }
   return css
+}
+
+export function getDefaultFonts() {
+  return [
+    {
+      value: 'Arial, helvetica, sans-serif',
+      label: 'Arial'
+    },
+    {
+      value: "'Arial black', helvetica, sans-serif",
+      label: 'Arial black'
+    },
+    {
+      value: "'Comic sans ms', cursive",
+      label: 'Comic sans ms'
+    },
+    {
+      value: "'Courier new', courier, monospace",
+      label: 'Courier new'
+    },
+    {
+      value: 'garamond, "times new roman", serif',
+      label: 'Garamond'
+    },
+    {
+      value: 'Georgia, serif',
+      label: 'Georgia'
+    },
+    {
+      value: 'Impact, Haettenschweiler',
+      label: 'Impact'
+    },
+    {
+      value: "'Lucida sans unicode', 'lucida grande', sans-serif",
+      label: 'Lucida sans unicode'
+    },
+    {
+      value:
+        "Palatino, 'Palatino Linotype', 'Palatino LT STD', 'Book Antiqua', Georgia, serif",
+      label: 'Palatino'
+    },
+    {
+      value: 'Tahoma, geneva, sans-serif',
+      label: 'Tahoma'
+    },
+    {
+      value: "'Times new roman', times, serif",
+      label: 'Times new roman'
+    },
+    {
+      value: "'Trebuchet ms', helvetica, sans-serif",
+      label: 'Trebuchet ms'
+    },
+    {
+      value: 'Verdana, geneva, sans-serif',
+      label: 'Verdana'
+    }
+  ]
 }

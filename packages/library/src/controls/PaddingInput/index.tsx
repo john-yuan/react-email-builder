@@ -2,7 +2,7 @@ import React from 'react'
 import { Field } from '../Field'
 import { SizeInput } from '../SizeInput'
 
-export default function PaddingInput({
+export function PaddingInput({
   value,
   onChange
 }: {

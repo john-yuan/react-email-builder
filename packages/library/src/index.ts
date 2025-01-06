@@ -6,7 +6,8 @@ export {
   createBaseBlock,
   createPlaceholder,
   namespace,
-  varsClass
+  varsClass,
+  getDefaultFonts
 } from './utils'
 
 export { columnsBlock } from './blocks/columns'
