@@ -1,7 +1,7 @@
+import clsx from 'clsx'
 import React from 'react'
 import { createPortal } from 'react-dom'
-import { getCss, varsClass } from '../../utils'
-import clsx from 'clsx'
+import { css } from './hooks'
 
 export interface Props {
   children?: React.ReactNode
@@ -9,6 +9,8 @@ export interface Props {
   popoverRef: (node: HTMLDivElement | null) => void
   className?: string
   style?: React.CSSProperties
+  noStyle?: boolean
+  arrow?: boolean | React.ReactNode
 }
 
 export function Popover({
@@ -16,20 +18,26 @@ export function Popover({
   children,
   style,
   open,
-  popoverRef
+  popoverRef,
+  noStyle,
+  arrow
 }: Props) {
-  if (open) {
-    const css = getCss('Popover', (ns) => ({
-      root: clsx(varsClass(), ns())
-    }))
-
-    return createPortal(
-      <div ref={popoverRef} className={clsx(css.root, className)} style={style}>
-        {children}
-      </div>,
-      document.body
-    )
-  }
-
-  return null
+  const { root, bg, body } = css()
+  return open
+    ? createPortal(
+        <div
+          ref={popoverRef}
+          className={clsx(root, className, {
+            [bg]: !noStyle
+          })}
+          style={style}
+        >
+          {arrow ? (
+            <div className={css().arrow}>{arrow === true ? null : arrow}</div>
+          ) : null}
+          <div className={body}>{children}</div>
+        </div>,
+        document.body
+      )
+    : null
 }
