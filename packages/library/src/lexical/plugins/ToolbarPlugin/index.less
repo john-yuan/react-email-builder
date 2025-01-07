@@ -1,0 +1,35 @@
+.REB-ToolbarPlugin {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  height: 36px;
+  padding: 0 10px;
+  gap: 2px;
+
+  &-icon {
+    height: 28px;
+    min-width: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 4px;
+
+    &:hover {
+      background: var(--reb-control-hover-color);
+    }
+
+    .REB-Icon {
+      display: block;
+    }
+  }
+
+  &-active {
+    color: rgb(49, 10, 245);
+    background: rgba(0, 0, 0, 0.03);
+  }
+
+  &-open {
+    background: var(--reb-control-active-color);
+  }
+}

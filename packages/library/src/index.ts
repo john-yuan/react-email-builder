@@ -1,4 +1,5 @@
 export { EmailBuilder } from './components/EmailBuilder'
+export { TextEditor } from './components/TextEditor'
 
 export {
   generateId,
@@ -25,7 +26,11 @@ export type {
   EmailBuilderConfig,
   EmailBuilderProps,
   EmailBuilderState,
-  FileUploadFunction
+  EmailBuilderPageStyle,
+  EmailBuilderSelectedBlockInfo,
+  FileUploadFunction,
+  TextEditorState,
+  TextEditorVariable
 } from './types'
 
 export type { ColumnsBlockAttrs } from './blocks/columns/types'
@@ -34,3 +39,4 @@ export type { DividerBlockAttrs } from './blocks/divider/types'
 export type { TextBlockAttrs } from './blocks/text/types'
 export type { ImageBlockAttrs } from './blocks/image/types'
 export type { SpacerBlockAttrs } from './blocks/spacer/types'
+export type { Props as TextEditorProps } from './components/TextEditor'

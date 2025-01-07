@@ -9,6 +9,7 @@ export interface Props {
 
 export function TextBlock({ block }: Props) {
   const style = useBlockStyle(block)
+
   return (
     <div style={style}>
       {block.type} - {block.id}

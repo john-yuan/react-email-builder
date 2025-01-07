@@ -3,6 +3,7 @@ import type {
   EmailEditorColumn,
   ColumnsBlockAttrs
 } from '../blocks/columns/types'
+import type { EditorState } from 'lexical'
 
 export interface EmailBuilderConfig {
   /**
@@ -160,4 +161,15 @@ export interface EmailBuilderSelectedBlockInfo {
   column?: EmailEditorColumn
   first?: boolean
   last?: boolean
+}
+
+export interface TextEditorState {
+  editorState?: string | EditorState
+  html?: string
+}
+
+export interface TextEditorVariable {
+  value: string
+  label: string
+  placeholder?: string
 }
