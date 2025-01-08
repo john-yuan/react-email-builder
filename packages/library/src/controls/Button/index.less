@@ -1,0 +1,77 @@
+@keyframes reb-Button-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.REB-Button {
+  padding: 10px;
+  text-align: center;
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  cursor: pointer;
+
+  &-inline {
+    display: inline-flex;
+    padding: 10px 25px;
+  }
+
+  &-small {
+    padding: 5px 15px;
+    font-size: 14px;
+  }
+
+  background: #eee;
+  color: #000;
+
+  &:hover {
+    background: #ddd;
+  }
+
+  &:active {
+    background: #ccc;
+  }
+
+  &-primary {
+    background: #000;
+    color: #fff;
+
+    &:hover {
+      background: #222;
+    }
+
+    &:active {
+      background: #444;
+    }
+  }
+
+  &-loading {
+    background: #444;
+    cursor: not-allowed;
+
+    &:hover {
+      background: #444;
+    }
+  }
+
+  &-icon {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    .REB-Icon {
+      display: block;
+      animation: reb-Button-spin 1s infinite linear;
+    }
+  }
+
+  &-icon,
+  &-text {
+    flex-grow: 0;
+    flex-shrink: 0;
+  }
+}
