@@ -32,4 +32,29 @@
   &-open {
     background: var(--reb-control-active-color);
   }
+
+  &-image {
+    min-width: 300px;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+
+  &-label {
+    display: flex;
+    margin-bottom: 4px;
+
+    > span {
+      flex-grow: 1;
+    }
+
+    > div {
+      flex-grow: 0;
+      flex-shrink: 0;
+      color: var(--reb-link-color);
+
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+  }
 }

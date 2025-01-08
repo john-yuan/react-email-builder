@@ -14,6 +14,8 @@ export interface Props
   className?: string
   block?: boolean
   size?: 'small' | 'default'
+  plain?: boolean
+  icon?: React.ReactNode
 }
 
 export function FileButton({
@@ -23,6 +25,8 @@ export function FileButton({
   size,
   block,
   className,
+  plain,
+  icon,
   ...inputProps
 }: Props) {
   const css = getCss('FileButton', (ns) => ({
@@ -37,6 +41,8 @@ export function FileButton({
       loading={loading}
       block={block}
       size={size}
+      plain={plain}
+      icon={icon}
     >
       {children}
       <input

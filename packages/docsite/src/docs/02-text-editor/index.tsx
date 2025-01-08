@@ -1,5 +1,5 @@
-import React, { useMemo, useState } from 'react'
-import type { TextEditorState } from 'react-email-builder';
+import React, { useCallback, useMemo, useState } from 'react'
+import type { TextEditorState } from 'react-email-builder'
 import { TextEditor } from 'react-email-builder'
 
 export default function App() {
@@ -12,9 +12,20 @@ export default function App() {
     }),
     []
   )
+
+  const upload = useCallback(async (file: File) => {
+    await new Promise((resolve) => setTimeout(resolve, 500))
+    return { url: URL.createObjectURL(file) }
+  }, [])
+
   return (
     <div>
-      <TextEditor state={state} setState={setState} style={style} />
+      <TextEditor
+        state={state}
+        setState={setState}
+        style={style}
+        upload={upload}
+      />
     </div>
   )
 }

@@ -14,10 +14,11 @@
   gap: 8px;
   justify-content: center;
   cursor: pointer;
+  line-height: 16px;
 
   &-inline {
     display: inline-flex;
-    padding: 10px 25px;
+    padding: 10px 15px;
   }
 
   &-small {
@@ -58,19 +59,35 @@
     }
   }
 
-  &-icon {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+  &-plain {
+    padding: 0;
+    background: inherit;
+    color: inherit;
+    gap: 4px;
 
+    &:hover,
+    &:active {
+      background: inherit;
+    }
+  }
+
+  &-icon {
     .REB-Icon {
       display: block;
+    }
+  }
+
+  &-spin {
+    .REB-Icon {
       animation: reb-Button-spin 1s infinite linear;
     }
   }
 
   &-icon,
   &-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     flex-grow: 0;
     flex-shrink: 0;
   }

@@ -17,7 +17,10 @@ import {
   COMMAND_PRIORITY_CRITICAL,
   FORMAT_TEXT_COMMAND,
   SELECTION_CHANGE_COMMAND,
-  $isElementNode
+  $isElementNode,
+  createCommand,
+  $insertNodes,
+  COMMAND_PRIORITY_EDITOR
 } from 'lexical'
 
 import {
@@ -30,20 +33,33 @@ import { $isLinkNode } from '@lexical/link'
 import { $findMatchingParent } from '@lexical/utils'
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
 
+import { Alert } from '../../../controls/Alert'
 import { Icon } from '../../../components/Icon'
 import { Popover } from '../../../controls/Popover'
 import { Tooltip } from '../../../controls/Tooltip'
-import type { SvgSymbolName } from '../../../components/SvgSymbols/symbols'
 import { ColorPalette } from '../../../controls/ColorPalette'
 import { useTooltip } from '../../../controls/Tooltip/hooks'
 import { usePopover } from '../../../controls/Popover/hooks'
-import { getCss } from '../../../utils'
+import { getCss, normalizeUrl } from '../../../utils'
+import { FileButton } from '../../../controls/FileButton'
+import { Button } from '../../../controls/Button'
+import { TextInput } from '../../../controls/TextInput'
+import { $createImageNode } from '../../nodes/ImageNode'
+
+import type { SvgSymbolName } from '../../../components/SvgSymbols/symbols'
 import type { FileUploadFunction, TextEditorVariable } from '../../../types'
 
 const DEFAULT_FONT_COLOR = '#000000'
 const DEFAULT_BG_COLOR = '#ffffff'
 const DEFAULT_FONT_SIZE = '14px'
 const DEFAULT_FONT_FAMILY = 'Arial, helvetica, sans-serif'
+
+type ImagePayload = {
+  url: string
+  alt?: string
+}
+
+const INSERT_IMAGE_COMMAND = createCommand<ImagePayload>('INSERT_IMAGE_COMMAND')
 
 type LinkInfo = {
   url: string
@@ -150,6 +166,21 @@ export function ToolbarPlugin({ upload, variables }: Props) {
   }, [editor, updateToolbar, setActiveEditor])
 
   useEffect(() => {
+    return activeEditor.registerCommand(
+      INSERT_IMAGE_COMMAND,
+      (payload) => {
+        if (payload.url) {
+          const imageNode = $createImageNode(payload.url, payload.alt)
+          $insertNodes([imageNode])
+          return true
+        }
+        return false
+      },
+      COMMAND_PRIORITY_EDITOR
+    )
+  }, [activeEditor])
+
+  useEffect(() => {
     activeEditor.getEditorState().read(() => {
       updateToolbar()
     })
@@ -233,6 +264,13 @@ export function ToolbarPlugin({ upload, variables }: Props) {
           setTextStyle({ 'background-color': color })
         }}
       />
+      <InsertImage
+        title="Insert image"
+        upload={upload}
+        onConfirm={(payload) => {
+          activeEditor.dispatchCommand(INSERT_IMAGE_COMMAND, payload)
+        }}
+      />
     </div>
   )
 }
@@ -242,7 +280,9 @@ function useCss() {
     root: ns(),
     icon: ns('icon'),
     active: ns('active'),
-    open: ns('open')
+    open: ns('open'),
+    image: ns('image'),
+    label: ns('label')
   }))
 }
 
@@ -296,7 +336,7 @@ function Color({
   const tooltip = useTooltip({ showDelay: 1000 })
   const popover = usePopover({
     placement: 'bottom-start',
-    offset: 4
+    offset: 8
   })
 
   return (
@@ -318,10 +358,167 @@ function Color({
           {title}
         </Tooltip>
       ) : null}
-      <Popover open={popover.open} popoverRef={popover.popoverRef}>
+      <Popover open={popover.open} popoverRef={popover.popoverRef} arrow>
         <ColorPalette color={color} onChange={onChange} />
       </Popover>
     </>
+  )
+}
+
+function InsertImage({
+  title,
+  upload,
+  onConfirm
+}: {
+  title?: string
+  upload?: FileUploadFunction
+  onConfirm: (payload: ImagePayload) => void
+}) {
+  const css = useCss()
+  const tooltip = useTooltip({ showDelay: 1000 })
+  const popover = usePopover({
+    placement: 'bottom-start',
+    offset: 8
+  })
+
+  return (
+    <>
+      <div
+        ref={(node) => {
+          tooltip.triggerRef(node)
+          popover.triggerRef(node)
+        }}
+        className={clsx(css.icon, { [css.open]: popover.open })}
+        onClick={() => {
+          popover.setOpen(true)
+        }}
+      >
+        <Icon name="image" />
+      </div>
+      {title && !popover.open ? (
+        <Tooltip open={tooltip.open} tooltipRef={tooltip.tooltipRef}>
+          {title}
+        </Tooltip>
+      ) : null}
+      <Popover open={popover.open} popoverRef={popover.popoverRef} arrow>
+        <ImageInput
+          upload={upload}
+          onConfirm={(payload) => {
+            onConfirm(payload)
+            popover.setOpen(false)
+          }}
+        />
+      </Popover>
+    </>
+  )
+}
+
+function ImageInput({
+  upload,
+  onConfirm
+}: {
+  upload?: FileUploadFunction
+  onConfirm: (payload: ImagePayload) => void
+}) {
+  const css = useCss()
+
+  const [state, setState] = useState<{
+    url: string
+    alt: string
+    uploading?: boolean
+    error?: string | boolean
+  }>({ url: '', alt: '' })
+
+  return (
+    <div className={css.image}>
+      {state.error ? (
+        <Alert
+          style={{ marginBottom: 16 }}
+          onClose={() => {
+            setState((prev) => ({ ...prev, error: false }))
+          }}
+        >
+          {state.error}
+        </Alert>
+      ) : null}
+      <div className={css.label}>
+        <span>Image URL</span>
+        {upload ? (
+          <div>
+            <FileButton
+              plain
+              size="small"
+              icon={<Icon name="plus" />}
+              accept="image/*"
+              loading={state.uploading}
+              onMouseDown={(e) => {
+                e.currentTarget.value = ''
+              }}
+              onChange={(e) => {
+                const file = e.target.files?.[0]
+                if (file) {
+                  setState((prev) => ({
+                    ...prev,
+                    uploading: true,
+                    error: false
+                  }))
+                  upload(file)
+                    .then((res) => {
+                      setState((prev) => ({
+                        ...prev,
+                        url: res.url,
+                        uploading: false,
+                        error: false
+                      }))
+                    })
+                    .catch(() => {
+                      setState((prev) => ({
+                        ...prev,
+                        uploading: false,
+                        error: 'Failed uploading image.'
+                      }))
+                    })
+                }
+              }}
+            >
+              Upload
+            </FileButton>
+          </div>
+        ) : null}
+      </div>
+      <TextInput
+        textarea
+        value={state.url}
+        onChange={(val) => {
+          setState((prev) => ({ ...prev, url: val }))
+        }}
+      />
+      <div style={{ margin: '14px 0 4px 0' }}>Alternate Text</div>
+      <TextInput
+        value={state.alt}
+        onChange={(val) => {
+          setState((prev) => ({ ...prev, alt: val }))
+        }}
+      />
+      <div style={{ marginTop: 16, textAlign: 'right' }}>
+        <Button
+          onClick={() => {
+            const url = normalizeUrl(state.url)
+
+            if (url) {
+              onConfirm({ url, alt: state.alt.trim() })
+            } else {
+              setState((prev) => ({
+                ...prev,
+                error: 'Please enter image URL.'
+              }))
+            }
+          }}
+        >
+          Confirm
+        </Button>
+      </div>
+    </div>
   )
 }
 

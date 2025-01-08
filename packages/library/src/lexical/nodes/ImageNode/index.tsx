@@ -14,34 +14,40 @@ import { Icon } from '../../../components/Icon'
 export type SerializedImageNode = Spread<
   {
     src: string
+    alt?: string
   },
   SerializedLexicalNode
 >
 
 export class ImageNode extends DecoratorNode<React.ReactNode> {
   __src: string
+  __alt: string
 
   static getType(): string {
     return 'image'
   }
 
   static clone(node: ImageNode): ImageNode {
-    return new ImageNode(node.__src, node.__key)
+    return new ImageNode(node.__src, node.__alt, node.__key)
   }
 
   static importJSON(node: SerializedImageNode): ImageNode {
-    return new ImageNode(node.src)
+    return new ImageNode(node.src, node.alt || '')
   }
 
-  constructor(src: string, key?: NodeKey) {
+  constructor(src: string, alt: string, key?: NodeKey) {
     super(key)
     this.__src = src
+    this.__alt = alt
   }
 
   exportDOM() {
     const img = document.createElement('img')
 
     img.setAttribute('src', this.__src)
+    if (this.__alt) {
+      img.setAttribute('alt', this.__alt)
+    }
     img.style.maxWidth = '100%'
 
     return { element: img }
@@ -52,18 +58,19 @@ export class ImageNode extends DecoratorNode<React.ReactNode> {
       img: () => ({
         conversion: (node: Node) => {
           const img = node as HTMLImageElement
-          return { node: $createImageNode(img.src) }
+          return { node: $createImageNode(img.src, img.alt) }
         },
         priority: 0
       })
     }
   }
 
-  exportJSON(): SerializedLexicalNode & { src: string } {
+  exportJSON(): SerializedImageNode {
     return {
       type: 'image',
       version: 1,
-      src: this.__src
+      src: this.__src,
+      alt: this.__alt
     }
   }
 
@@ -87,6 +94,7 @@ export class ImageNode extends DecoratorNode<React.ReactNode> {
     return (
       <ImageContent
         src={this.__src}
+        alt={this.__alt}
         onSelect={() => {
           editor.update(() => {
             const selection = this.selectNext()
@@ -102,9 +110,11 @@ export class ImageNode extends DecoratorNode<React.ReactNode> {
 
 function ImageContent({
   src,
+  alt,
   onSelect
 }: {
   src: string
+  alt?: string
   onSelect: () => void
 }) {
   const handleClick = useCallback(
@@ -134,6 +144,7 @@ function ImageContent({
   return (
     <img
       src={src}
+      alt={alt}
       style={{ maxWidth: '100%' }}
       onClick={(e) => {
         handleClick(e)
@@ -143,6 +154,6 @@ function ImageContent({
   )
 }
 
-export function $createImageNode(src: string) {
-  return new ImageNode(src)
+export function $createImageNode(src: string, alt?: string) {
+  return new ImageNode(src, alt || '')
 }

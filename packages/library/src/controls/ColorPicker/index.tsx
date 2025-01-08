@@ -44,7 +44,7 @@ export function ColorPicker({ color, onChange, hideClear }: Props) {
               setOpen(false)
             }}
           >
-            <Icon name="close" />
+            <Icon name="clear" />
           </i>
         ) : null}
       </div>

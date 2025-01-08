@@ -191,3 +191,19 @@ export function getDefaultFonts() {
     }
   ]
 }
+
+export function isAbsUrl(url: string) {
+  return /^[a-z][a-z0-9\-.+]*:/i.test(url) || url.startsWith('//')
+}
+
+export function normalizeUrl(url?: string | null) {
+  if (!url) {
+    return ''
+  }
+
+  if (url.startsWith('//')) {
+    return 'https:' + url
+  }
+
+  return isAbsUrl(url) ? url : 'https://' + url
+}
