@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
 import type {
   ElementFormatType,
@@ -166,6 +166,20 @@ export function ToolbarPlugin({ upload, variables }: Props) {
   }, [editor, updateToolbar, setActiveEditor])
 
   useEffect(() => {
+    activeEditor.getEditorState().read(() => {
+      updateToolbar()
+    })
+  }, [activeEditor, updateToolbar])
+
+  useEffect(() => {
+    return activeEditor.registerUpdateListener(({ editorState }) => {
+      editorState.read(() => {
+        updateToolbar()
+      })
+    })
+  }, [updateToolbar, activeEditor, editor])
+
+  useEffect(() => {
     return activeEditor.registerCommand(
       INSERT_IMAGE_COMMAND,
       (payload) => {
@@ -179,12 +193,6 @@ export function ToolbarPlugin({ upload, variables }: Props) {
       COMMAND_PRIORITY_EDITOR
     )
   }, [activeEditor])
-
-  useEffect(() => {
-    activeEditor.getEditorState().read(() => {
-      updateToolbar()
-    })
-  }, [activeEditor, updateToolbar])
 
   const setTextStyle = useCallback(
     (styles: Record<string, string>) => {
@@ -271,6 +279,10 @@ export function ToolbarPlugin({ upload, variables }: Props) {
           activeEditor.dispatchCommand(INSERT_IMAGE_COMMAND, payload)
         }}
       />
+      <FontSize
+        value={state.fontSize || DEFAULT_FONT_SIZE}
+        setTextStyle={setTextStyle}
+      />
     </div>
   )
 }
@@ -282,7 +294,12 @@ function useCss() {
     active: ns('active'),
     open: ns('open'),
     image: ns('image'),
-    label: ns('label')
+    label: ns('label'),
+    dropdown: ns('dropdown'),
+    options: ns('options'),
+    option: ns('option'),
+    optionText: ns('option-text'),
+    selected: ns('selected')
   }))
 }
 
@@ -348,7 +365,7 @@ function Color({
         }}
         className={clsx(css.icon, { [css.open]: popover.open })}
         onClick={() => {
-          popover.setOpen(true)
+          popover.setOpen(!popover.open)
         }}
       >
         <Icon name={icon} />
@@ -390,7 +407,7 @@ function InsertImage({
         }}
         className={clsx(css.icon, { [css.open]: popover.open })}
         onClick={() => {
-          popover.setOpen(true)
+          popover.setOpen(!popover.open)
         }}
       >
         <Icon name="image" />
@@ -519,6 +536,113 @@ function ImageInput({
         </Button>
       </div>
     </div>
+  )
+}
+
+function FontSize({
+  value,
+  setTextStyle
+}: {
+  value: string
+  setTextStyle: (style: Record<string, string>) => void
+}) {
+  const options = useMemo(() => {
+    const list: { value: string; label: string }[] = []
+
+    for (let i = 12; i <= 72; i += 1) {
+      const value = i + 'px'
+      list.push({ value, label: value })
+    }
+
+    return list
+  }, [])
+
+  return (
+    <Dropdown
+      value={value}
+      options={options}
+      title="Font size"
+      onChange={(fontSize) => {
+        setTextStyle({ 'font-size': fontSize })
+      }}
+    />
+  )
+}
+
+function Dropdown({
+  title,
+  options,
+  value,
+  onChange
+}: {
+  title?: string
+  options: {
+    icon?: SvgSymbolName
+    value: string
+    label: string
+  }[]
+  value?: string
+  onChange: (value: string) => void
+}) {
+  const css = useCss()
+  const tooltip = useTooltip({ showDelay: 1000 })
+  const popover = usePopover({
+    placement: 'bottom-start',
+    offset: 8
+  })
+
+  const selected = options.find((el) => el.value === value)
+
+  let content: React.ReactNode = 'Select'
+
+  if (selected) {
+    if (selected.icon) {
+      content = <Icon name={selected.icon} />
+    } else {
+      content = selected.label
+    }
+  }
+
+  return (
+    <>
+      <div
+        ref={(node) => {
+          tooltip.triggerRef(node)
+          popover.triggerRef(node)
+        }}
+        className={clsx(css.dropdown, { [css.open]: popover.open })}
+        onClick={() => {
+          popover.setOpen(!popover.open)
+        }}
+      >
+        {content}
+        <Icon name={popover.open ? 'caret-up' : 'caret-down'} />
+      </div>
+      {title && !popover.open ? (
+        <Tooltip open={tooltip.open} tooltipRef={tooltip.tooltipRef}>
+          {title}
+        </Tooltip>
+      ) : null}
+      <Popover open={popover.open} popoverRef={popover.popoverRef} arrow>
+        <div className={css.options}>
+          {options.map((option) => (
+            <div
+              key={option.value}
+              className={clsx(css.option, {
+                [css.selected]: option.value === value
+              })}
+              onClick={() => {
+                onChange(option.value)
+                popover.setOpen(false)
+              }}
+            >
+              {option.icon ? <Icon name={option.icon} /> : null}
+              <div className={css.optionText}>{option.label}</div>
+            </div>
+          ))}
+        </div>
+      </Popover>
+    </>
   )
 }
 

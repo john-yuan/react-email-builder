@@ -6,7 +6,8 @@
   padding: 0 10px;
   gap: 2px;
 
-  &-icon {
+  &-icon,
+  &-dropdown {
     height: 28px;
     min-width: 28px;
     display: flex;
@@ -27,6 +28,11 @@
   &-active {
     color: rgb(49, 10, 245);
     background: rgba(0, 0, 0, 0.03);
+  }
+
+  &-dropdown {
+    padding: 0 6px;
+    gap: 2px;
   }
 
   &-open {
@@ -56,5 +62,34 @@
         opacity: 0.8;
       }
     }
+  }
+
+  &-options {
+    max-height: 320px;
+    overflow: auto;
+    padding: 4px 0;
+  }
+
+  &-option {
+    display: flex;
+    padding: 7px 20px;
+    cursor: pointer;
+
+    &:hover {
+      background: #f5f5f5;
+    }
+  }
+
+  &-option-text {
+    max-width: calc(100vw - 40px);
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &-selected {
+    background: #eee;
+    font-weight: bold;
   }
 }
