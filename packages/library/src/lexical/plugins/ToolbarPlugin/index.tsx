@@ -49,6 +49,7 @@ import { $createImageNode } from '../../nodes/ImageNode'
 
 import type { SvgSymbolName } from '../../../components/SvgSymbols/symbols'
 import type { FileUploadFunction, TextEditorVariable } from '../../../types'
+import { $createVariableNode } from '../../nodes/VariableNode'
 
 type ImagePayload = {
   url: string
@@ -60,6 +61,10 @@ type LinkPayload = {
 }
 
 const INSERT_IMAGE_COMMAND = createCommand<ImagePayload>('INSERT_IMAGE_COMMAND')
+
+export const INSERT_VARIABLE_COMMAND = createCommand<TextEditorVariable>(
+  'INSERT_VARIABLE_COMMAND'
+)
 
 export interface Props {
   /**
@@ -308,6 +313,21 @@ export function ToolbarPlugin({
     )
   }, [activeEditor])
 
+  useEffect(() => {
+    return activeEditor.registerCommand(
+      INSERT_VARIABLE_COMMAND,
+      (payload) => {
+        const node = $createVariableNode(
+          payload.value,
+          payload.placeholder || payload.label
+        )
+        $insertNodes([node])
+        return true
+      },
+      COMMAND_PRIORITY_EDITOR
+    )
+  }, [activeEditor])
+
   const setTextStyle = useCallback(
     (styles: Record<string, string>) => {
       activeEditor.update(() => {
@@ -393,6 +413,13 @@ export function ToolbarPlugin({
           activeEditor.dispatchCommand(INSERT_IMAGE_COMMAND, payload)
         }}
       />
+      {variables?.length ? (
+        <Variables
+          title="Insert variable"
+          variables={variables}
+          activeEditor={activeEditor}
+        />
+      ) : null}
       <Alignment
         value={state.format || DEFAULT_ALIGNMENT}
         onChange={(payload) => {
@@ -479,36 +506,11 @@ function Color({
   title?: string
   onChange: (color: string) => void
 }) {
-  const css = useCss()
-  const tooltip = useTooltip({ showDelay: 1000 })
-  const popover = usePopover({
-    placement: 'bottom-start',
-    offset: 8
-  })
-
+  const popover = useIconPopover()
   return (
-    <>
-      <div
-        ref={(node) => {
-          tooltip.triggerRef(node)
-          popover.triggerRef(node)
-        }}
-        className={clsx(css.icon, { [css.open]: popover.open })}
-        onClick={() => {
-          popover.setOpen(!popover.open)
-        }}
-      >
-        <Icon name={icon} />
-      </div>
-      {title && !popover.open ? (
-        <Tooltip open={tooltip.open} tooltipRef={tooltip.tooltipRef}>
-          {title}
-        </Tooltip>
-      ) : null}
-      <Popover open={popover.open} popoverRef={popover.popoverRef} arrow>
-        <ColorPalette color={color} onChange={onChange} />
-      </Popover>
-    </>
+    <IconPopover title={title} icon={icon} {...popover}>
+      <ColorPalette color={color} onChange={onChange} />
+    </IconPopover>
   )
 }
 
@@ -521,42 +523,18 @@ function InsertImage({
   upload?: FileUploadFunction
   onConfirm: (payload: ImagePayload) => void
 }) {
-  const css = useCss()
-  const tooltip = useTooltip({ showDelay: 1000 })
-  const popover = usePopover({
-    placement: 'bottom-start',
-    offset: 8
-  })
+  const popover = useIconPopover()
 
   return (
-    <>
-      <div
-        ref={(node) => {
-          tooltip.triggerRef(node)
-          popover.triggerRef(node)
+    <IconPopover title={title} icon="image" {...popover}>
+      <ImageInput
+        upload={upload}
+        onConfirm={(payload) => {
+          popover.setOpen(false)
+          onConfirm(payload)
         }}
-        className={clsx(css.icon, { [css.open]: popover.open })}
-        onClick={() => {
-          popover.setOpen(!popover.open)
-        }}
-      >
-        <Icon name="image" />
-      </div>
-      {title && !popover.open ? (
-        <Tooltip open={tooltip.open} tooltipRef={tooltip.tooltipRef}>
-          {title}
-        </Tooltip>
-      ) : null}
-      <Popover open={popover.open} popoverRef={popover.popoverRef} arrow>
-        <ImageInput
-          upload={upload}
-          onConfirm={(payload) => {
-            onConfirm(payload)
-            popover.setOpen(false)
-          }}
-        />
-      </Popover>
-    </>
+      />
+    </IconPopover>
   )
 }
 
@@ -744,6 +722,76 @@ function Alignment({
   )
 }
 
+function Variables({
+  title,
+  variables,
+  activeEditor
+}: {
+  title?: string
+  variables: TextEditorVariable[]
+  activeEditor: LexicalEditor
+}) {
+  const popover = useIconPopover()
+
+  return (
+    <IconPopover icon="variable" title={title} {...popover}>
+      <Options
+        options={variables}
+        onChange={(option) => {
+          popover.setOpen(false)
+          activeEditor.dispatchCommand(INSERT_VARIABLE_COMMAND, option)
+        }}
+      />
+    </IconPopover>
+  )
+}
+
+function useIconPopover() {
+  return usePopover({
+    placement: 'bottom-start',
+    offset: 8
+  })
+}
+
+function IconPopover({
+  title,
+  icon,
+  children,
+  ...popover
+}: {
+  icon: SvgSymbolName
+  children: React.ReactNode
+  title?: string
+} & ReturnType<typeof useIconPopover>) {
+  const css = useCss()
+  const tooltip = useTooltip({ showDelay: 1000 })
+
+  return (
+    <>
+      <div
+        ref={(node) => {
+          tooltip.triggerRef(node)
+          popover.triggerRef(node)
+        }}
+        className={clsx(css.icon, { [css.open]: popover.open })}
+        onClick={() => {
+          popover.setOpen(!popover.open)
+        }}
+      >
+        <Icon name={icon} />
+      </div>
+      {title && !popover.open ? (
+        <Tooltip open={tooltip.open} tooltipRef={tooltip.tooltipRef}>
+          {title}
+        </Tooltip>
+      ) : null}
+      <Popover open={popover.open} popoverRef={popover.popoverRef} arrow>
+        {children}
+      </Popover>
+    </>
+  )
+}
+
 function Dropdown({
   title,
   options,
@@ -799,25 +847,54 @@ function Dropdown({
         </Tooltip>
       ) : null}
       <Popover open={popover.open} popoverRef={popover.popoverRef} arrow>
-        <div className={css.options}>
-          {options.map((option) => (
-            <div
-              key={option.value}
-              className={clsx(css.option, {
-                [css.selected]: option.value === value
-              })}
-              onClick={() => {
-                onChange(option.value)
-                popover.setOpen(false)
-              }}
-            >
-              {option.icon ? <Icon name={option.icon} /> : null}
-              <div className={css.optionText}>{option.label}</div>
-            </div>
-          ))}
-        </div>
+        <Options
+          options={options}
+          value={value}
+          onChange={(option) => {
+            onChange(option.value)
+            popover.setOpen(false)
+          }}
+        />
       </Popover>
     </>
+  )
+}
+
+function Options({
+  options,
+  value,
+  onChange
+}: {
+  options: {
+    icon?: SvgSymbolName
+    value: string
+    label: string
+  }[]
+  value?: string
+  onChange: (option: {
+    icon?: SvgSymbolName
+    value: string
+    label: string
+  }) => void
+}) {
+  const css = useCss()
+  return (
+    <div className={css.options}>
+      {options.map((option) => (
+        <div
+          key={option.value}
+          className={clsx(css.option, {
+            [css.selected]: option.value === value
+          })}
+          onClick={() => {
+            onChange(option)
+          }}
+        >
+          {option.icon ? <Icon name={option.icon} /> : null}
+          <div className={css.optionText}>{option.label}</div>
+        </div>
+      ))}
+    </div>
   )
 }
 

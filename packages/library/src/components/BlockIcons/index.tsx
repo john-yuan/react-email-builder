@@ -29,11 +29,7 @@ function useCss() {
   }))
 }
 
-function BlockIcon({
-  block,
-}: {
-  block: EmailBuilderBlockConfig
-}) {
+function BlockIcon({ block }: { block: EmailBuilderBlockConfig }) {
   const css = useCss()
   const type = block.type
   const config = useEmailBuilderConfig()

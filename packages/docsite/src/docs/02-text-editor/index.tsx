@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react'
-import type { TextEditorState } from 'react-email-builder'
+import type { TextEditorState, TextEditorVariable } from 'react-email-builder'
 import { TextEditor } from 'react-email-builder'
 
 export default function App() {
@@ -18,6 +18,22 @@ export default function App() {
     return { url: URL.createObjectURL(file) }
   }, [])
 
+  const variables = useMemo<TextEditorVariable[]>(
+    () => [
+      {
+        value: 'receiver.name',
+        label: 'Receiver Name',
+        placeholder: '{{Receiver Name}}'
+      },
+      {
+        value: 'receiver.email',
+        label: 'Receiver Email',
+        placeholder: '{{Receiver Email}}'
+      }
+    ],
+    []
+  )
+
   return (
     <div>
       <TextEditor
@@ -25,6 +41,7 @@ export default function App() {
         setState={setState}
         style={style}
         upload={upload}
+        variables={variables}
       />
     </div>
   )
