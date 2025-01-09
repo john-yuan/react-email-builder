@@ -689,6 +689,7 @@ function FontFamily({
     <Dropdown
       value={value}
       options={options}
+      title="Font family"
       onChange={(fontFamily) => {
         setTextStyle({ 'font-family': fontFamily })
       }}
