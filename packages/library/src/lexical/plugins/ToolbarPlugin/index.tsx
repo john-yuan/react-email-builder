@@ -30,7 +30,7 @@ import {
   $patchStyleText
 } from '@lexical/selection'
 
-import { $isLinkNode } from '@lexical/link'
+import { $isLinkNode, TOGGLE_LINK_COMMAND } from '@lexical/link'
 import { $findMatchingParent } from '@lexical/utils'
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
 
@@ -406,6 +406,7 @@ export function ToolbarPlugin({
           setTextStyle({ 'background-color': color })
         }}
       />
+      <Link title="Link" link={state.link} activeEditor={activeEditor} />
       <InsertImage
         title="Insert image"
         upload={upload}
@@ -450,7 +451,7 @@ function useCss() {
     icon: ns('icon'),
     active: ns('active'),
     open: ns('open'),
-    image: ns('image'),
+    input: ns('input'),
     label: ns('label'),
     dropdown: ns('dropdown'),
     options: ns('options'),
@@ -555,17 +556,7 @@ function ImageInput({
   }>({ url: '', alt: '' })
 
   return (
-    <div className={css.image}>
-      {state.error ? (
-        <Alert
-          style={{ marginBottom: 16 }}
-          onClose={() => {
-            setState((prev) => ({ ...prev, error: false }))
-          }}
-        >
-          {state.error}
-        </Alert>
-      ) : null}
+    <div className={css.input}>
       <div className={css.label}>
         <span>Image URL</span>
         {upload ? (
@@ -615,9 +606,19 @@ function ImageInput({
         textarea
         value={state.url}
         onChange={(val) => {
-          setState((prev) => ({ ...prev, url: val }))
+          setState((prev) => ({ ...prev, error: false, url: val }))
         }}
       />
+      {state.error ? (
+        <Alert
+          style={{ margin: '10px 0' }}
+          onClose={() => {
+            setState((prev) => ({ ...prev, error: false }))
+          }}
+        >
+          {state.error}
+        </Alert>
+      ) : null}
       <div style={{ margin: '14px 0 4px 0' }}>Alternate Text</div>
       <TextInput
         value={state.alt}
@@ -719,6 +720,70 @@ function Alignment({
       title="Alignment"
       onChange={onChange as (value: string) => void}
     />
+  )
+}
+
+function Link({
+  title,
+  link,
+  activeEditor
+}: {
+  title?: string
+  link?: LinkPayload
+  activeEditor: LexicalEditor
+}) {
+  const popover = useIconPopover()
+
+  return (
+    <IconPopover title={title} icon="link" {...popover}>
+      <LinkInput
+        value={link?.url || ''}
+        onChange={(url) => {
+          popover.setOpen(false)
+          activeEditor.dispatchCommand(TOGGLE_LINK_COMMAND, url || null)
+        }}
+      />
+    </IconPopover>
+  )
+}
+
+function LinkInput({
+  value,
+  onChange
+}: {
+  value: string
+  onChange: (value?: string) => void
+}) {
+  const css = useCss()
+  const [input, setInput] = useState(value)
+
+  useEffect(() => {
+    setInput(value)
+  }, [value])
+
+  return (
+    <div className={css.input}>
+      <div style={{ marginBottom: 4 }}>URL</div>
+      <TextInput textarea rows={3} value={input} onChange={setInput} />
+      <div style={{ marginTop: 16, textAlign: 'right' }}>
+        <Button
+          secondary
+          style={{ marginRight: 10 }}
+          onClick={() => {
+            onChange()
+          }}
+        >
+          Delete
+        </Button>
+        <Button
+          onClick={() => {
+            onChange(normalizeUrl(input.trim()))
+          }}
+        >
+          Confirm
+        </Button>
+      </div>
+    </div>
   )
 }
 
