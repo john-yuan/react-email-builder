@@ -40,7 +40,7 @@ import { Tooltip } from '../../../controls/Tooltip'
 import { ColorPalette } from '../../../controls/ColorPalette'
 import { useTooltip } from '../../../controls/Tooltip/hooks'
 import { usePopover } from '../../../controls/Popover/hooks'
-import { getCss, normalizeUrl } from '../../../utils'
+import { getCss, getDefaultFonts, normalizeUrl } from '../../../utils'
 import { FileButton } from '../../../controls/FileButton'
 import { Button } from '../../../controls/Button'
 import { TextInput } from '../../../controls/TextInput'
@@ -281,6 +281,10 @@ export function ToolbarPlugin({ upload, variables }: Props) {
       />
       <FontSize
         value={state.fontSize || DEFAULT_FONT_SIZE}
+        setTextStyle={setTextStyle}
+      />
+      <FontFamily
+        value={state.fontFamily || DEFAULT_FONT_FAMILY}
         setTextStyle={setTextStyle}
       />
     </div>
@@ -564,6 +568,24 @@ function FontSize({
       title="Font size"
       onChange={(fontSize) => {
         setTextStyle({ 'font-size': fontSize })
+      }}
+    />
+  )
+}
+
+function FontFamily({
+  value,
+  setTextStyle
+}: {
+  value: string
+  setTextStyle: (style: Record<string, string>) => void
+}) {
+  return (
+    <Dropdown
+      value={value}
+      options={getDefaultFonts()}
+      onChange={(fontFamily) => {
+        setTextStyle({ 'font-family': fontFamily })
       }}
     />
   )
