@@ -98,6 +98,9 @@ importers:
       '@lexical/react':
         specifier: ^0.23.0
         version: 0.23.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(yjs@13.6.21)
+      '@lexical/rich-text':
+        specifier: ^0.23.0
+        version: 0.23.0
       '@lexical/selection':
         specifier: ^0.23.0
         version: 0.23.0

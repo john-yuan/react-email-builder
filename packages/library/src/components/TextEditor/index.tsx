@@ -4,6 +4,7 @@ import { getCss, varsClass } from '../../utils'
 import { useLexicalConfig } from '../../lexical/hooks'
 import { SvgSymbols } from '../SvgSymbols'
 import { ToolbarPlugin } from '../../lexical/plugins/ToolbarPlugin'
+import { DragDropPasteImagePlugin } from '../../lexical/plugins/DragDropPasteImagePlugin'
 import type { TextEditorState } from '../../types'
 import type { Props as ToolbarPluginProps } from '../../lexical/plugins/ToolbarPlugin'
 
@@ -70,6 +71,7 @@ function InnerTextEditor({
   editorClassName,
   placeholder,
   placeholderClassName,
+  upload,
   ...props
 }: {
   style?: React.CSSProperties
@@ -102,7 +104,7 @@ function InnerTextEditor({
     <div className={css.root}>
       <LexicalComposer initialConfig={config}>
         <div className={css.toolbar}>
-          <ToolbarPlugin {...props} />
+          <ToolbarPlugin upload={upload} {...props} />
         </div>
         <div className={css.body}>
           <RichTextPlugin
@@ -123,6 +125,7 @@ function InnerTextEditor({
         <LinkPlugin attributes={{ target: '_blank', rel: '' }} />
         <HistoryPlugin />
         <OnChangePlugin onChange={onChange} />
+        {upload ? <DragDropPasteImagePlugin upload={upload} /> : null}
       </LexicalComposer>
       <SvgSymbols />
     </div>
