@@ -20,7 +20,8 @@ import {
   $isElementNode,
   createCommand,
   $insertNodes,
-  COMMAND_PRIORITY_EDITOR
+  COMMAND_PRIORITY_EDITOR,
+  FORMAT_ELEMENT_COMMAND
 } from 'lexical'
 
 import {
@@ -124,6 +125,11 @@ export interface Props {
    * The default text background color.
    */
   defaultTextBgColor?: string
+
+  /**
+   * The default alignment.
+   */
+  defaultAlignment?: 'left' | 'right' | 'center' | 'justify'
 }
 
 export function ToolbarPlugin({
@@ -134,7 +140,8 @@ export function ToolbarPlugin({
   fontSizes,
   fonts,
   defaultTextColor,
-  defaultTextBgColor
+  defaultTextBgColor,
+  defaultAlignment
 }: Props) {
   const css = useCss()
 
@@ -171,6 +178,7 @@ export function ToolbarPlugin({
 
   const DEFAULT_TEXT_COLOR = defaultTextColor
   const DEFAULT_TEXT_BG_COLOR = defaultTextBgColor
+  const DEFAULT_ALIGNMENT = defaultAlignment || 'left'
 
   const [editor] = useLexicalComposerContext()
   const [activeEditor, setActiveEditor] = useState(editor)
@@ -236,7 +244,7 @@ export function ToolbarPlugin({
         ? matchingParent.getFormatType()
         : $isElementNode(node)
           ? node.getFormatType()
-          : parent?.getFormatType() || 'left'
+          : parent?.getFormatType()
 
       setState({
         color,
@@ -383,6 +391,12 @@ export function ToolbarPlugin({
         upload={upload}
         onConfirm={(payload) => {
           activeEditor.dispatchCommand(INSERT_IMAGE_COMMAND, payload)
+        }}
+      />
+      <Alignment
+        value={state.format || DEFAULT_ALIGNMENT}
+        onChange={(payload) => {
+          activeEditor.dispatchCommand(FORMAT_ELEMENT_COMMAND, payload)
         }}
       />
       {FONT_SIZES.length ? (
@@ -693,6 +707,39 @@ function FontFamily({
       onChange={(fontFamily) => {
         setTextStyle({ 'font-family': fontFamily })
       }}
+    />
+  )
+}
+
+function Alignment({
+  value,
+  onChange
+}: {
+  value: ElementFormatType
+  onChange: (value: ElementFormatType) => void
+}) {
+  const options = useMemo<
+    {
+      icon: SvgSymbolName
+      value: string
+      label: string
+    }[]
+  >(
+    () => [
+      { value: 'left', icon: 'align-left', label: 'Left' },
+      { value: 'center', icon: 'align-center', label: 'Center' },
+      { value: 'right', icon: 'align-right', label: 'Right' },
+      { value: 'justify', icon: 'align-justify', label: 'Justify' }
+    ],
+    []
+  )
+
+  return (
+    <Dropdown
+      options={options}
+      value={value}
+      title="Alignment"
+      onChange={onChange as (value: string) => void}
     />
   )
 }
