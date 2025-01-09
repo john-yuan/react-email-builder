@@ -1,19 +1,14 @@
 import clsx from 'clsx'
 import React, { memo, useEffect, useMemo } from 'react'
-import type {
-  FileUploadFunction,
-  TextEditorState,
-  TextEditorVariable
-} from '../../types'
 import { getCss, varsClass } from '../../utils'
 import { useLexicalConfig } from '../../lexical/hooks'
 import { SvgSymbols } from '../SvgSymbols'
+import { ToolbarPlugin } from '../../lexical/plugins/ToolbarPlugin'
+import type { TextEditorState } from '../../types'
+import type { Props as ToolbarPluginProps } from '../../lexical/plugins/ToolbarPlugin'
 
-import type {
-  InitialConfigType} from '@lexical/react/LexicalComposer';
-import {
-  LexicalComposer
-} from '@lexical/react/LexicalComposer'
+import type { InitialConfigType } from '@lexical/react/LexicalComposer'
+import { LexicalComposer } from '@lexical/react/LexicalComposer'
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin'
 import { ContentEditable } from '@lexical/react/LexicalContentEditable'
 import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary'
@@ -21,11 +16,10 @@ import { LinkPlugin } from '@lexical/react/LexicalLinkPlugin'
 import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin'
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
 import { $generateHtmlFromNodes } from '@lexical/html'
-import { ToolbarPlugin } from '../../lexical/plugins/ToolbarPlugin'
 
 const LexicalTextEditor = memo(InnerTextEditor)
 
-export interface Props {
+export interface Props extends ToolbarPluginProps {
   /**
    * The placeholder text.
    */
@@ -45,16 +39,6 @@ export interface Props {
    * A function to update text editor state.
    */
   setState: React.Dispatch<React.SetStateAction<TextEditorState>>
-
-  /**
-   * A function upload file.
-   */
-  upload?: FileUploadFunction
-
-  /**
-   * The variable list.
-   */
-  variables?: TextEditorVariable[]
 }
 
 export function TextEditor({
@@ -62,8 +46,7 @@ export function TextEditor({
   style,
   state,
   setState,
-  upload,
-  variables
+  ...props
 }: Props) {
   const [{ css, config }] = useLexicalConfig(state.editorState)
 
@@ -73,10 +56,9 @@ export function TextEditor({
       style={style}
       placeholder={placeholder}
       onChange={setState}
-      upload={upload}
-      variables={variables}
       editorClassName={css.editor}
       placeholderClassName={css.placeholder}
+      {...props}
     />
   )
 }
@@ -88,8 +70,7 @@ function InnerTextEditor({
   editorClassName,
   placeholder,
   placeholderClassName,
-  upload,
-  variables
+  ...props
 }: {
   style?: React.CSSProperties
   config: InitialConfigType
@@ -97,9 +78,7 @@ function InnerTextEditor({
   editorClassName?: string
   placeholderClassName?: string
   placeholder?: string
-  upload?: FileUploadFunction
-  variables?: TextEditorVariable[]
-}) {
+} & ToolbarPluginProps) {
   const css = getCss('TextEditor', (ns) => ({
     root: clsx(varsClass(), ns()),
     toolbar: ns('toolbar'),
@@ -123,7 +102,7 @@ function InnerTextEditor({
     <div className={css.root}>
       <LexicalComposer initialConfig={config}>
         <div className={css.toolbar}>
-          <ToolbarPlugin upload={upload} variables={variables} />
+          <ToolbarPlugin {...props} />
         </div>
         <div className={css.body}>
           <RichTextPlugin
@@ -166,7 +145,7 @@ function OnChangePlugin({
         })
       })
     })
-  }, [editor])
+  }, [editor, onChange])
 
   return null
 }

@@ -49,29 +49,120 @@ import { $createImageNode } from '../../nodes/ImageNode'
 import type { SvgSymbolName } from '../../../components/SvgSymbols/symbols'
 import type { FileUploadFunction, TextEditorVariable } from '../../../types'
 
-const DEFAULT_FONT_COLOR = '#000000'
-const DEFAULT_BG_COLOR = '#ffffff'
-const DEFAULT_FONT_SIZE = '14px'
-const DEFAULT_FONT_FAMILY = 'Arial, helvetica, sans-serif'
-
 type ImagePayload = {
   url: string
   alt?: string
 }
 
-const INSERT_IMAGE_COMMAND = createCommand<ImagePayload>('INSERT_IMAGE_COMMAND')
-
-type LinkInfo = {
+type LinkPayload = {
   url: string
 }
 
+const INSERT_IMAGE_COMMAND = createCommand<ImagePayload>('INSERT_IMAGE_COMMAND')
+
 export interface Props {
+  /**
+   * The function to upload image.
+   */
   upload?: FileUploadFunction
+
+  /**
+   * The variable list.
+   */
   variables?: TextEditorVariable[]
+
+  /**
+   * The font family list.
+   *
+   * @example
+   * [
+   *   { value: 'Arial, helvetica, sans-serif', label: 'Arial' }
+   *   { value: 'Georgia, serif', label: 'Georgia' },
+   * ]
+   */
+  fonts?: {
+    value: string
+    label: string
+  }[]
+
+  /**
+   * The default font. If not set, the first font in `fonts` will be
+   * used.
+   *
+   * @example 'Arial, helvetica, sans-serif'
+   */
+  defaultFont?: string
+
+  /**
+   * The font size list.
+   *
+   * @example ['12px', '13px', '14px', '15px', '16px', '24px', '32px']
+   */
+  fontSizes?: string[]
+
+  /**
+   * The default font size. If not set, `14px` will be used.
+   * @example '14px'
+   */
+  defaultFontSize?: string
+
+  /**
+   * The default text color.
+   */
+  defaultTextColor?: string
+
+  /**
+   * The default text background color.
+   */
+  defaultTextBgColor?: string
 }
 
-export function ToolbarPlugin({ upload, variables }: Props) {
+export function ToolbarPlugin({
+  upload,
+  variables,
+  defaultFont,
+  defaultFontSize,
+  fontSizes,
+  fonts,
+  defaultTextColor,
+  defaultTextBgColor
+}: Props) {
   const css = useCss()
+
+  const { FONTS, DEFAULT_FONT_FAMILY } = useMemo(() => {
+    const list = fonts || getDefaultFonts()
+    return {
+      FONTS: list,
+      DEFAULT_FONT_FAMILY: defaultFont ?? list[0]?.value
+    }
+  }, [fonts, defaultFont])
+
+  const { FONT_SIZES, DEFAULT_FONT_SIZE } = useMemo(() => {
+    const list: {
+      value: string
+      label: string
+    }[] = []
+
+    if (fontSizes) {
+      fontSizes.forEach((value) => {
+        list.push({ value, label: value })
+      })
+    } else {
+      for (let i = 12; i <= 72; i += 1) {
+        const value = i + 'px'
+        list.push({ value, label: value })
+      }
+    }
+
+    return {
+      FONT_SIZES: list,
+      DEFAULT_FONT_SIZE: defaultFontSize ?? '14px'
+    }
+  }, [fontSizes, defaultFontSize])
+
+  const DEFAULT_TEXT_COLOR = defaultTextColor
+  const DEFAULT_TEXT_BG_COLOR = defaultTextBgColor
+
   const [editor] = useLexicalComposerContext()
   const [activeEditor, setActiveEditor] = useState(editor)
   const [state, setState] = useState<{
@@ -84,7 +175,7 @@ export function ToolbarPlugin({ upload, variables }: Props) {
     underline?: boolean
     strikethrough?: boolean
     format?: ElementFormatType
-    link?: LinkInfo
+    link?: LinkPayload
   }>({
     fontSize: DEFAULT_FONT_SIZE,
     fontFamily: DEFAULT_FONT_FAMILY
@@ -97,13 +188,13 @@ export function ToolbarPlugin({ upload, variables }: Props) {
       const color = $getSelectionStyleValueForProperty(
         selection,
         'color',
-        DEFAULT_FONT_COLOR
+        DEFAULT_TEXT_COLOR
       )
 
       const bgColor = $getSelectionStyleValueForProperty(
         selection,
         'background-color',
-        DEFAULT_BG_COLOR
+        DEFAULT_TEXT_BG_COLOR
       )
 
       const fontFamily = $getSelectionStyleValueForProperty(
@@ -122,7 +213,7 @@ export function ToolbarPlugin({ upload, variables }: Props) {
       const parent = node.getParent()
 
       let matchingParent: LexicalNode | undefined | null
-      let link: LinkInfo | undefined
+      let link: LinkPayload | undefined
 
       if ($isLinkNode(parent)) {
         link = { url: parent.getURL() }
@@ -151,7 +242,13 @@ export function ToolbarPlugin({ upload, variables }: Props) {
         strikethrough: selection.hasFormat('strikethrough')
       })
     }
-  }, [setState])
+  }, [
+    setState,
+    DEFAULT_TEXT_BG_COLOR,
+    DEFAULT_TEXT_COLOR,
+    DEFAULT_FONT_FAMILY,
+    DEFAULT_FONT_SIZE
+  ])
 
   useEffect(() => {
     return editor.registerCommand(
@@ -223,8 +320,8 @@ export function ToolbarPlugin({ upload, variables }: Props) {
   )
 
   useEffect(() => {
-    console.log({ variables, upload })
-  }, [variables, upload])
+    console.log({ variables })
+  }, [variables])
 
   return (
     <div className={css.root} onMouseDown={prevent}>
@@ -279,14 +376,20 @@ export function ToolbarPlugin({ upload, variables }: Props) {
           activeEditor.dispatchCommand(INSERT_IMAGE_COMMAND, payload)
         }}
       />
-      <FontSize
-        value={state.fontSize || DEFAULT_FONT_SIZE}
-        setTextStyle={setTextStyle}
-      />
-      <FontFamily
-        value={state.fontFamily || DEFAULT_FONT_FAMILY}
-        setTextStyle={setTextStyle}
-      />
+      {FONT_SIZES.length ? (
+        <FontSize
+          options={FONT_SIZES}
+          value={state.fontSize || DEFAULT_FONT_SIZE}
+          setTextStyle={setTextStyle}
+        />
+      ) : null}
+      {FONTS.length ? (
+        <FontFamily
+          options={FONTS}
+          value={state.fontFamily || DEFAULT_FONT_FAMILY}
+          setTextStyle={setTextStyle}
+        />
+      ) : null}
     </div>
   )
 }
@@ -545,22 +648,13 @@ function ImageInput({
 
 function FontSize({
   value,
-  setTextStyle
+  setTextStyle,
+  options
 }: {
-  value: string
+  value?: string
   setTextStyle: (style: Record<string, string>) => void
+  options: { value: string; label: string }[]
 }) {
-  const options = useMemo(() => {
-    const list: { value: string; label: string }[] = []
-
-    for (let i = 12; i <= 72; i += 1) {
-      const value = i + 'px'
-      list.push({ value, label: value })
-    }
-
-    return list
-  }, [])
-
   return (
     <Dropdown
       value={value}
@@ -575,15 +669,17 @@ function FontSize({
 
 function FontFamily({
   value,
-  setTextStyle
+  setTextStyle,
+  options
 }: {
-  value: string
+  value?: string
   setTextStyle: (style: Record<string, string>) => void
+  options: { value: string; label: string }[]
 }) {
   return (
     <Dropdown
       value={value}
-      options={getDefaultFonts()}
+      options={options}
       onChange={(fontFamily) => {
         setTextStyle({ 'font-family': fontFamily })
       }}
