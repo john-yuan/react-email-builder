@@ -89,6 +89,10 @@ export interface Props {
    * The default font. If not set, the first font in `fonts` will be
    * used.
    *
+   * If you set a default font, don't forget to overwrite the
+   * `font-family` of the css class named `.REB-Lexical-editor` and
+   * `.REB-Lexical-placeholder`.
+   *
    * @example 'Arial, helvetica, sans-serif'
    */
   defaultFont?: string
@@ -102,6 +106,11 @@ export interface Props {
 
   /**
    * The default font size. If not set, `14px` will be used.
+   *
+   * If you set a default font size, don't forget to overwrite the
+   * `font-size` of the css class named `.REB-Lexical-editor` and
+   * `.REB-Lexical-placeholder`.
+   *
    * @example '14px'
    */
   defaultFontSize?: string
