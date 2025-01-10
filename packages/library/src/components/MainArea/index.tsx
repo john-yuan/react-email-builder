@@ -42,7 +42,7 @@ export function MainArea() {
           style={{
             paddingTop: style.padding?.[0] ?? nil,
             paddingBottom: style.padding?.[2] ?? nil,
-            backgroundColor: style.bgColor
+            backgroundColor: state.draggingType ? '#fff' : style.bgColor
           }}
         >
           <Blocks onClick={clearSelected} />
