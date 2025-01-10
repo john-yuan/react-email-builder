@@ -3,7 +3,9 @@ import type { PlaceholderAttrs } from '../blocks/placeholder/types'
 import type {
   EmailBuilderBlock,
   EmailBuilderConfig,
-  EmailBuilderSelectedBlockInfo
+  EmailBuilderSelectedBlockInfo,
+  EmailBuilderState,
+  SerializedEmailBuilderState
 } from '../types'
 
 let counter = 0
@@ -208,4 +210,75 @@ export function normalizeUrl(url?: string | null) {
   }
 
   return isAbsUrl(url) ? url : 'https://' + url
+}
+
+export function serializeEmailBuilderState(
+  config: EmailBuilderConfig,
+  state: EmailBuilderState
+): SerializedEmailBuilderState {
+  const exportBlock = (block: EmailBuilderBlock) => {
+    const blockConfig = config.blocks.find((b) => b.type === block.type)
+    const exportJSON = blockConfig?.exportJSON
+    const serialized: EmailBuilderBlock<any> = {
+      ...block,
+      attrs: exportJSON ? exportJSON(block.attrs) : block.attrs
+    }
+
+    if (serialized.type === 'columns') {
+      let attrs = serialized.attrs as ColumnsBlockAttrs
+      attrs = {
+        ...attrs,
+        columns: attrs.columns.map((column) => ({
+          ...column,
+          blocks: column.blocks.map(exportBlock)
+        }))
+      }
+
+      serialized.attrs = attrs
+    }
+
+    return serialized
+  }
+
+  return {
+    pageStyle: state.pageStyle,
+    blocks: state.blocks.map(exportBlock)
+  }
+}
+
+export function deserializeEmailBuilderState(
+  config: EmailBuilderConfig,
+  state: SerializedEmailBuilderState
+): EmailBuilderState {
+  const importBlock = (block: EmailBuilderBlock) => {
+    const blockConfig = config.blocks.find((b) => b.type === block.type)
+    const importJSON = blockConfig?.importJSON
+    const deserialized: EmailBuilderBlock = {
+      ...block,
+      attrs: importJSON ? importJSON(block.attrs) : block.attrs
+    }
+
+    deserialized.attrs = deserialized.attrs || {}
+    deserialized.blockStyle = deserialized.blockStyle || {}
+    deserialized.sectionStyle = deserialized.sectionStyle || {}
+
+    if (deserialized.type === 'columns') {
+      let attrs = deserialized.attrs as ColumnsBlockAttrs
+      attrs = {
+        ...attrs,
+        columns: attrs.columns.map((column) => ({
+          ...column,
+          blocks: column.blocks.map(importBlock)
+        }))
+      }
+      deserialized.attrs = attrs
+    }
+
+    return deserialized
+  }
+
+  return {
+    pageStyle: state.pageStyle,
+    blocks: state.blocks.map(importBlock)
+  }
 }

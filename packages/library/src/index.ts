@@ -8,7 +8,9 @@ export {
   createPlaceholder,
   namespace,
   varsClass,
-  getDefaultFonts
+  getDefaultFonts,
+  serializeEmailBuilderState,
+  deserializeEmailBuilderState
 } from './utils'
 
 export { columnsBlock } from './blocks/columns'

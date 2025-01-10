@@ -91,7 +91,10 @@ export interface EmailBuilderConfig {
   }
 }
 
-export interface EmailBuilderBlockConfig<Attrs extends object = any> {
+export interface EmailBuilderBlockConfig<
+  Attrs extends object = any,
+  SerializedAttrs extends object = any
+> {
   /**
    * Specify the block type. The block type must be unique.
    *
@@ -130,6 +133,17 @@ export interface EmailBuilderBlockConfig<Attrs extends object = any> {
     base: EmailBuilderBlock<any>,
     config: EmailBuilderConfig
   ) => EmailBuilderBlock<Attrs>
+
+  /**
+   * Specify the function to serialize the block attrs.
+   * Must return a valid JSON object that can be serialized.
+   */
+  exportJSON?: (attrs: Attrs) => SerializedAttrs
+
+  /**
+   * Specify the function to deserialize the block attrs.
+   */
+  importJSON?: (json: SerializedAttrs) => Attrs
 }
 
 export type FileUploadFunction = (file: File) => Promise<{ url: string }>
@@ -161,9 +175,9 @@ export interface EmailBuilderSectionStyle {
 export interface EmailBuilderBlock<Attrs extends object = any> {
   id: string
   type: string
+  attrs: Attrs
   blockStyle: EmailBuilderBlockStyle
   sectionStyle: EmailBuilderSectionStyle
-  attrs: Attrs
 }
 
 export interface EmailBuilderProps {
@@ -221,6 +235,11 @@ export interface EmailBuilderState {
    * The current selected tab in sidebar.
    */
   tab?: 'blocks' | 'settings' | 'page'
+}
+
+export interface SerializedEmailBuilderState {
+  pageStyle?: EmailBuilderPageStyle
+  blocks: EmailBuilderBlock<any>[]
 }
 
 export interface EmailBuilderSelectedBlockInfo {
