@@ -4,16 +4,28 @@ import { SizeInput } from '../SizeInput'
 
 export function PaddingInput({
   value,
+  hideHorizontal,
   onChange
 }: {
-  value?: number[]
-  onChange: (value: number[]) => void
+  value?: (number | null)[]
+  hideHorizontal?: boolean
+  onChange: (value: (number | null)[]) => void
 }) {
   const padding = value ? value : []
-  const top = padding[0]
-  const right = padding[1]
-  const bottom = padding[2]
-  const left = padding[3]
+  const nil = undefined
+  const top = padding[0] ?? nil
+  const right = padding[1] ?? nil
+  const bottom = padding[2] ?? nil
+  const left = padding[3] ?? nil
+
+  const update = (
+    T: number | null | undefined,
+    R: number | null | undefined,
+    B: number | null | undefined,
+    L: number | null | undefined
+  ) => {
+    onChange([T ?? null, R ?? null, B ?? null, L ?? null])
+  }
 
   return (
     <>
@@ -23,7 +35,7 @@ export function PaddingInput({
           min={0}
           value={top}
           onChange={(top) => {
-            onChange([top, right, bottom, left] as number[])
+            update(top, right, bottom, left)
           }}
         />
       </Field>
@@ -34,32 +46,36 @@ export function PaddingInput({
           min={0}
           value={bottom}
           onChange={(bottom) => {
-            onChange([top, right, bottom, left] as number[])
+            update(top, right, bottom, left)
           }}
         />
       </Field>
 
-      <Field label="Padding left">
-        <SizeInput
-          unit="px"
-          min={0}
-          value={left}
-          onChange={(left) => {
-            onChange([top, right, bottom, left] as number[])
-          }}
-        />
-      </Field>
+      {hideHorizontal ? null : (
+        <>
+          <Field label="Padding left">
+            <SizeInput
+              unit="px"
+              min={0}
+              value={left}
+              onChange={(left) => {
+                update(top, right, bottom, left)
+              }}
+            />
+          </Field>
 
-      <Field label="Padding right">
-        <SizeInput
-          unit="px"
-          min={0}
-          value={right}
-          onChange={(right) => {
-            onChange([top, right, bottom, left] as number[])
-          }}
-        />
-      </Field>
+          <Field label="Padding right">
+            <SizeInput
+              unit="px"
+              min={0}
+              value={right}
+              onChange={(right) => {
+                update(top, right, bottom, left)
+              }}
+            />
+          </Field>
+        </>
+      )}
     </>
   )
 }

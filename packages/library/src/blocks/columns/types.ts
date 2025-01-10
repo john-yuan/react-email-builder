@@ -2,7 +2,7 @@ import type { EmailBuilderBlock } from '../../types'
 
 export interface ColumnStyle {
   bgColor?: string
-  padding?: number[]
+  padding?: (number | null)[]
 }
 
 export interface EmailEditorColumn {

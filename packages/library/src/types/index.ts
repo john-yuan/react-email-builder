@@ -74,7 +74,7 @@ export interface EmailBuilderBlockStyle {
   /**
    * The block padding in pixel: `[top, right, bottom, left]`.
    */
-  padding?: number[]
+  padding?: (number | null)[]
 }
 
 export interface EmailBuilderSectionStyle {
@@ -112,8 +112,7 @@ export interface EmailBuilderProps {
 
 export interface EmailBuilderPageStyle {
   bgColor?: string
-  paddingTop?: number
-  paddingBottom?: number
+  padding?: (number | null)[]
 }
 
 export interface EmailBuilderState {

@@ -14,6 +14,6 @@ export interface ButtonBlockAttrs {
   textDecoration?: 'underline' | 'none'
 
   align?: 'left' | 'right' | 'center' | 'justify'
-  padding?: number[] // [top, right, bottom, left] px
+  padding?: (number | null)[] // [top, right, bottom, left] px
   borderRadius?: number // px
 }

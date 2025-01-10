@@ -30,12 +30,13 @@ export function useBlockStyle(block: EmailBuilderBlock) {
   const style = block.blockStyle
   return useMemo<React.CSSProperties>(() => {
     const p = style.padding || []
+    const u = undefined
     return {
       backgroundColor: style.bgColor,
-      paddingTop: p[0],
-      paddingRight: p[1],
-      paddingBottom: p[2],
-      paddingLeft: p[3]
+      paddingTop: p[0] ?? u,
+      paddingRight: p[1] ?? u,
+      paddingBottom: p[2] ?? u,
+      paddingLeft: p[3] ?? u
     }
   }, [style])
 }

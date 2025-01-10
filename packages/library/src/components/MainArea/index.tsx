@@ -30,6 +30,8 @@ export function MainArea() {
     [setState]
   )
 
+  const nil = undefined
+
   return (
     <div className={css.root}>
       <div className={css.header}></div>
@@ -38,8 +40,8 @@ export function MainArea() {
           className={css.email}
           onClick={clearSelected}
           style={{
-            paddingTop: style.paddingTop,
-            paddingBottom: style.paddingTop,
+            paddingTop: style.padding?.[0] ?? nil,
+            paddingBottom: style.padding?.[2] ?? nil,
             backgroundColor: style.bgColor
           }}
         >

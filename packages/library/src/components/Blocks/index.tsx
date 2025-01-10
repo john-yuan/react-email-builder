@@ -146,15 +146,16 @@ function Columns({
           {columns.map((column) => {
             const style = column.style || {}
             const p = style.padding || []
+            const nil = undefined
             return (
               <div key={column.id} className={css.column}>
                 <div
                   style={{
                     backgroundColor: style.bgColor,
-                    paddingTop: p[0],
-                    paddingRight: p[1],
-                    paddingBottom: p[2],
-                    paddingLeft: p[3]
+                    paddingTop: p[0] ?? nil,
+                    paddingRight: p[1] ?? nil,
+                    paddingBottom: p[2] ?? nil,
+                    paddingLeft: p[3] ?? nil
                   }}
                 >
                   <List
