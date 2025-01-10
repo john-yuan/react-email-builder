@@ -1,6 +1,6 @@
 import type React from 'react'
 import type {
-  EmailEditorColumn,
+  EmailBuilderColumn,
   ColumnsBlockAttrs
 } from '../blocks/columns/types'
 import type { EditorState } from 'lexical'
@@ -120,7 +120,7 @@ export interface EmailBuilderBlockConfig<Attrs extends object = any> {
   /**
    * The component to render the block editor.
    */
-  editorComponent: React.ComponentType<{ block: EmailBuilderBlock<Attrs> }>
+  editorComponent?: React.ComponentType<{ block: EmailBuilderBlock<Attrs> }>
 
   /**
    * Specify the function to create a new block. You can modify the `base` block
@@ -226,7 +226,7 @@ export interface EmailBuilderState {
 export interface EmailBuilderSelectedBlockInfo {
   block?: EmailBuilderBlock
   columns?: EmailBuilderBlock<ColumnsBlockAttrs>
-  column?: EmailEditorColumn
+  column?: EmailBuilderColumn
   first?: boolean
   last?: boolean
 }

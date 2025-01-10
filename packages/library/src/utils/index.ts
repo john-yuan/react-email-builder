@@ -33,7 +33,9 @@ export function createBaseBlock(type: string): EmailBuilderBlock {
     blockStyle: {
       padding: [10, 20, 10, 20]
     },
-    sectionStyle: {}
+    sectionStyle: {
+      full: 'yes'
+    }
   }
 }
 

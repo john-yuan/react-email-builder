@@ -2,7 +2,7 @@ import React, { memo, useCallback } from 'react'
 import type { EmailBuilderBlock, TextEditorState } from '../../../types'
 import type { TextBlockAttrs } from '../types'
 import {
-  useBlockEditor,
+  useBlockAttrsEditor,
   useBlockStyle,
   useEmailBuilderConfig,
   useEmailBuilderState
@@ -35,7 +35,7 @@ const TextEditor = memo(function TextEditor({
   config: InitialConfigType
   editorClassName: string
   placeholderClassName: string
-  onChange: (value: TextEditorState) => void
+  onChange: (state: TextEditorState) => void
 }) {
   const { upload, textEditor } = useEmailBuilderConfig()
   const { placeholder, ...toolbar } = textEditor || {}
@@ -45,8 +45,6 @@ const TextEditor = memo(function TextEditor({
     toolbar: ns('toolbar'),
     body: ns('body')
   }))
-
-  console.log('update.Editor')
 
   return (
     <div className={css.root}>
@@ -88,19 +86,15 @@ export function TextBlock({ block }: Props) {
   const { selectedId } = useEmailBuilderState()
   const [{ css, config }] = useLexicalConfig(block.attrs.editorState)
   const style = useBlockStyle(block)
-  const setBlock = useBlockEditor<TextBlockAttrs>(block.id)
+  const setAttrs = useBlockAttrsEditor(block)
   const onChange = useCallback(
-    (value: TextEditorState) => {
-      setBlock((prev) => ({
-        ...prev,
-        attrs: {
-          ...prev.attrs,
-          html: value.html,
-          editorState: value.editorState
-        }
-      }))
+    (state: TextEditorState) => {
+      setAttrs({
+        html: state.html,
+        editorState: state.editorState
+      })
     },
-    [setBlock]
+    [setAttrs]
   )
 
   return (

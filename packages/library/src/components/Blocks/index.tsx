@@ -144,14 +144,14 @@ function Columns({
       >
         <div className={css.grid + ' ' + css.grid + '-' + columns.length}>
           {columns.map((column) => {
-            const style = column.style || {}
-            const p = style.padding || []
+            const attrs = column.attrs || {}
+            const p = attrs.padding || []
             const nil = undefined
             return (
               <div key={column.id} className={css.column}>
                 <div
                   style={{
-                    backgroundColor: style.bgColor,
+                    backgroundColor: attrs.bgColor,
                     paddingTop: p[0] ?? nil,
                     paddingRight: p[1] ?? nil,
                     paddingBottom: p[2] ?? nil,

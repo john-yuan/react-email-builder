@@ -5,6 +5,7 @@
   height: 36px;
   padding: 0 10px;
   gap: 2px;
+  overflow: auto;
 
   &-icon,
   &-dropdown {
@@ -16,6 +17,8 @@
     cursor: pointer;
     border-radius: 4px;
     color: #000;
+    flex-grow: 0;
+    flex-shrink: 0;
 
     &:hover {
       background: var(--reb-control-hover-color);

@@ -3,7 +3,6 @@ import type { EmailBuilderBlock, EmailBuilderBlockConfig } from '../../types'
 import type { TextBlockAttrs } from './types'
 import { Icon } from '../../components/Icon'
 import { TextBlock } from './TextBlock'
-import { TextBlockEditor } from './TextBlockEditor'
 
 export function textBlock(): EmailBuilderBlockConfig<TextBlockAttrs> {
   return {
@@ -14,7 +13,6 @@ export function textBlock(): EmailBuilderBlockConfig<TextBlockAttrs> {
       const block = base as any as EmailBuilderBlock<TextBlockAttrs>
       return block
     },
-    blockComponent: TextBlock,
-    editorComponent: TextBlockEditor
+    blockComponent: TextBlock
   }
 }

@@ -1,16 +1,16 @@
 import type { EmailBuilderBlock } from '../../types'
 
-export interface ColumnStyle {
+export interface EmailBuilderColumnAttrs {
   bgColor?: string
   padding?: (number | null)[]
 }
 
-export interface EmailEditorColumn {
+export interface EmailBuilderColumn {
   id: string
-  style: ColumnStyle
+  attrs: EmailBuilderColumnAttrs
   blocks: EmailBuilderBlock[]
 }
 
 export interface ColumnsBlockAttrs {
-  columns: EmailEditorColumn[]
+  columns: EmailBuilderColumn[]
 }
