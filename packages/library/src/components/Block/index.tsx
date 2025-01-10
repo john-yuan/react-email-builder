@@ -10,30 +10,28 @@ import { useEmailBuilderConfig, useSetEmailBuilderState } from '../../hooks'
 import { DropArea } from '../DropArea'
 import { Placeholder } from '../../blocks/placeholder'
 
-const BlockContent = memo(
-  ({
-    className,
-    config,
-    block
-  }: {
-    className?: string
-    block: EmailBuilderBlock
-    config: EmailBuilderConfig
-  }) => {
-    let content = null
+const BlockContent = memo(function BlockContent({
+  className,
+  config,
+  block
+}: {
+  className?: string
+  block: EmailBuilderBlock
+  config: EmailBuilderConfig
+}) {
+  let content = null
 
-    if (block.type === 'placeholder') {
-      content = <Placeholder block={block} />
-    } else {
-      const Component = config.blocks.find(
-        (b) => b.type === block.type
-      )?.blockComponent
-      content = Component ? <Component block={block} /> : null
-    }
-
-    return <div className={className}>{content}</div>
+  if (block.type === 'placeholder') {
+    content = <Placeholder block={block} />
+  } else {
+    const Component = config.blocks.find(
+      (b) => b.type === block.type
+    )?.blockComponent
+    content = Component ? <Component block={block} /> : null
   }
-)
+
+  return <div className={className}>{content}</div>
+})
 
 export interface Props {
   block: EmailBuilderBlock

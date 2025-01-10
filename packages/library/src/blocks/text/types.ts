@@ -1,3 +1,3 @@
-export interface TextBlockAttrs {
-  html?: string
-}
+import type { TextEditorState } from '../../types'
+
+export type TextBlockAttrs = TextEditorState

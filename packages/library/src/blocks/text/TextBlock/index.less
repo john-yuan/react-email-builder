@@ -1,0 +1,40 @@
+.REB-TextBlock {
+  position: relative;
+
+  &-wrapper {
+    position: absolute;
+    top: -39px;
+    right: -1px;
+    bottom: 28px;
+    left: -1px;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  &-toolbar {
+    background-color: #fff;
+    pointer-events: auto;
+    position: sticky;
+    z-index: 1;
+    top: 0;
+    border: 2px dashed #ddd;
+
+    &::after {
+      display: block;
+      content: '';
+      position: absolute;
+      pointer-events: none;
+      bottom: -2px;
+      left: -2px;
+      right: -2px;
+      height: 2px;
+      background: var(--reb-block-selected-outline-color);
+      z-index: 2;
+    }
+  }
+
+  &-body {
+    position: relative;
+    z-index: 1;
+  }
+}

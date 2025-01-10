@@ -12,14 +12,83 @@ export interface EmailBuilderConfig {
   blocks: EmailBuilderBlockConfig[]
 
   /**
-   * The function used to upload image files.
+   * The function to upload image.
    */
-  uploadImage?: FileUploadFunction
+  upload?: FileUploadFunction
 
-  fonts?: {
-    value: string
-    label: string
-  }[]
+  /**
+   * The text editor config.
+   */
+  textEditor?: {
+    /**
+     * The placeholder.
+     */
+    placeholder?: string
+
+    /**
+     * The variable list.
+     */
+    variables?: TextEditorVariable[]
+
+    /**
+     * The font family list.
+     *
+     * @example
+     * [
+     *   { value: 'Arial, helvetica, sans-serif', label: 'Arial' }
+     *   { value: 'Georgia, serif', label: 'Georgia' },
+     * ]
+     */
+    fonts?: {
+      value: string
+      label: string
+    }[]
+
+    /**
+     * The default font. If not set, the first font in `fonts` will be
+     * used.
+     *
+     * If you set a default font, don't forget to overwrite the
+     * `font-family` of the css class named `.REB-Lexical-editor` and
+     * `.REB-Lexical-placeholder`.
+     *
+     * @example 'Arial, helvetica, sans-serif'
+     */
+    defaultFont?: string
+
+    /**
+     * The font size list.
+     *
+     * @example ['12px', '13px', '14px', '15px', '16px', '24px', '32px']
+     */
+    fontSizes?: string[]
+
+    /**
+     * The default font size. If not set, `14px` will be used.
+     *
+     * If you set a default font size, don't forget to overwrite the
+     * `font-size` of the css class named `.REB-Lexical-editor` and
+     * `.REB-Lexical-placeholder`.
+     *
+     * @example '14px'
+     */
+    defaultFontSize?: string
+
+    /**
+     * The default text color.
+     */
+    defaultTextColor?: string
+
+    /**
+     * The default text background color.
+     */
+    defaultTextBgColor?: string
+
+    /**
+     * The default alignment.
+     */
+    defaultAlignment?: 'left' | 'right' | 'center' | 'justify'
+  }
 }
 
 export interface EmailBuilderBlockConfig<Attrs extends object = any> {

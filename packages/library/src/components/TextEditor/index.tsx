@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import React, { memo, useEffect, useMemo } from 'react'
+import React, { memo, useMemo } from 'react'
 import { getCss, varsClass } from '../../utils'
 import { useLexicalConfig } from '../../lexical/hooks'
 import { SvgSymbols } from '../SvgSymbols'
@@ -15,56 +15,9 @@ import { ContentEditable } from '@lexical/react/LexicalContentEditable'
 import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary'
 import { LinkPlugin } from '@lexical/react/LexicalLinkPlugin'
 import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin'
-import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
-import { $generateHtmlFromNodes } from '@lexical/html'
+import { OnChangePlugin } from '../../lexical/plugins/OnChangePlugin'
 
-const LexicalTextEditor = memo(InnerTextEditor)
-
-export interface Props extends ToolbarPluginProps {
-  /**
-   * The placeholder text.
-   */
-  placeholder?: string
-
-  /**
-   * The editor style.
-   */
-  style?: React.CSSProperties
-
-  /**
-   * The text editor state.
-   */
-  state: TextEditorState
-
-  /**
-   * A function to update text editor state.
-   */
-  setState: React.Dispatch<React.SetStateAction<TextEditorState>>
-}
-
-export function TextEditor({
-  placeholder,
-  style,
-  state,
-  setState,
-  ...props
-}: Props) {
-  const [{ css, config }] = useLexicalConfig(state.editorState)
-
-  return (
-    <LexicalTextEditor
-      config={config}
-      style={style}
-      placeholder={placeholder}
-      onChange={setState}
-      editorClassName={css.editor}
-      placeholderClassName={css.placeholder}
-      {...props}
-    />
-  )
-}
-
-function InnerTextEditor({
+const LexicalTextEditor = memo(function LexicalTextEditor({
   style,
   config,
   onChange,
@@ -116,7 +69,7 @@ function InnerTextEditor({
             }
             placeholder={
               <div className={placeholderClassName} style={placeholderStyle}>
-                {placeholder || 'Enter some text...'}
+                {placeholder ?? 'Enter some text...'}
               </div>
             }
             ErrorBoundary={LexicalErrorBoundary}
@@ -130,25 +83,48 @@ function InnerTextEditor({
       <SvgSymbols />
     </div>
   )
+})
+
+export interface Props extends ToolbarPluginProps {
+  /**
+   * The placeholder text.
+   */
+  placeholder?: string
+
+  /**
+   * The editor style.
+   */
+  style?: React.CSSProperties
+
+  /**
+   * The text editor state.
+   */
+  state: TextEditorState
+
+  /**
+   * A function to update text editor state.
+   */
+  setState: React.Dispatch<React.SetStateAction<TextEditorState>>
 }
 
-function OnChangePlugin({
-  onChange
-}: {
-  onChange: (state: TextEditorState) => void
-}) {
-  const [editor] = useLexicalComposerContext()
+export function TextEditor({
+  placeholder,
+  style,
+  state,
+  setState,
+  ...props
+}: Props) {
+  const [{ css, config }] = useLexicalConfig(state.editorState)
 
-  useEffect(() => {
-    return editor.registerUpdateListener(({ editorState }) => {
-      editorState.read(() => {
-        onChange({
-          editorState,
-          html: $generateHtmlFromNodes(editor, null)
-        })
-      })
-    })
-  }, [editor, onChange])
-
-  return null
+  return (
+    <LexicalTextEditor
+      config={config}
+      style={style}
+      placeholder={placeholder}
+      onChange={setState}
+      editorClassName={css.editor}
+      placeholderClassName={css.placeholder}
+      {...props}
+    />
+  )
 }

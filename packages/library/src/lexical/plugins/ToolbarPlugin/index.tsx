@@ -356,10 +356,6 @@ export function ToolbarPlugin({
     []
   )
 
-  useEffect(() => {
-    console.log({ variables })
-  }, [variables])
-
   return (
     <div className={css.root} onMouseDown={prevent}>
       <FontFormat

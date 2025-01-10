@@ -13,6 +13,24 @@ import {
 import 'react-email-builder/styles.css'
 
 const config: EmailBuilderConfig = {
+  upload: async (file: File) => {
+    await new Promise((resolve) => setTimeout(resolve, 500))
+    return { url: URL.createObjectURL(file) }
+  },
+  textEditor: {
+    variables: [
+      {
+        value: 'receiver.name',
+        label: 'Receiver Name',
+        placeholder: '{{Receiver Name}}'
+      },
+      {
+        value: 'receiver.email',
+        label: 'Receiver Email',
+        placeholder: '{{Receiver Email}}'
+      }
+    ]
+  },
   blocks: [
     columnsBlock(),
     buttonBlock(),
@@ -26,15 +44,10 @@ const config: EmailBuilderConfig = {
 export default function App() {
   const [state, setState] = useState<EmailBuilderState>({
     pageStyle: {
-      paddingTop: 32,
-      paddingBottom: 32,
+      padding: [32, 0, 32, 0],
       bgColor: '#ffffff'
     },
-    blocks: [
-      createBlock(config, 'button'),
-      createBlock(config, 'spacer'),
-      createBlock(config, 'divider')
-    ]
+    blocks: [createBlock(config, 'button'), createBlock(config, 'text')]
   })
 
   const editorStyle = useMemo<React.CSSProperties>(
