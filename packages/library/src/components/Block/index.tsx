@@ -141,7 +141,7 @@ const Delete = memo(function Delete({ blockId }: { blockId: string }) {
           <div style={{ textAlign: 'right', marginTop: 24 }}>
             <Button
               secondary
-              style={{ marginRight: 10 }}
+              style={{ marginRight: 12 }}
               onClick={() => {
                 popover.setOpen(false)
               }}

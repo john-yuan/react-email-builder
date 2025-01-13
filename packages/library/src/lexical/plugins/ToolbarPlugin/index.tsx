@@ -751,7 +751,7 @@ function LinkInput({
       <div style={{ marginTop: 16, textAlign: 'right' }}>
         <Button
           secondary
-          style={{ marginRight: 10 }}
+          style={{ marginRight: 12 }}
           onClick={() => {
             onChange()
           }}
