@@ -126,11 +126,25 @@ export interface EmailBuilderBlockConfig<
   editorComponent?: React.ComponentType<{ block: EmailBuilderBlock<Attrs> }>
 
   /**
-   * Specify the function to create a new block. You can modify the `base` block
-   * passed in (which contains all the common fields) directly and return it.
+   * Specify the function to create a new block. You can modify the `base`
+   * block passed in (which contains all the common fields) directly and
+   * return it.
    */
   createBlock?: (
     base: EmailBuilderBlock<any>,
+    config: EmailBuilderConfig
+  ) => EmailBuilderBlock<Attrs>
+
+  /**
+   * Specify the function to copy the block.
+   *
+   * @param block The original block. The value must be treated as immutable.
+   * @param config The email builder config.
+   * @returns The copied block. The id of the copied block must be different
+   * with the original one, you can use `generateId()` to generated a new id.
+   */
+  copyBlock?: (
+    block: EmailBuilderBlock<Attrs>,
     config: EmailBuilderConfig
   ) => EmailBuilderBlock<Attrs>
 

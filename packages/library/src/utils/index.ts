@@ -68,6 +68,14 @@ export function createBlock(
   return base
 }
 
+export function copyBlock(
+  block: EmailBuilderBlock,
+  config: EmailBuilderConfig
+): EmailBuilderBlock {
+  const copy = config.blocks.find((b) => b.type === block.type)?.copyBlock
+  return copy ? copy(block, config) : { ...block, id: generateId() }
+}
+
 export function namespace(module: string) {
   const base = 'REB-' + module
 
@@ -197,7 +205,7 @@ export function getDefaultFonts() {
   ]
 }
 
-export function isAbsUrl(url: string) {
+export function isAbsoluteUrl(url: string) {
   return /^[a-z][a-z0-9\-.+]*:/i.test(url) || url.startsWith('//')
 }
 
@@ -210,7 +218,7 @@ export function normalizeUrl(url?: string | null) {
     return 'https:' + url
   }
 
-  return isAbsUrl(url) ? url : 'https://' + url
+  return isAbsoluteUrl(url) ? url : 'https://' + url
 }
 
 export function serializeEmailBuilderState(

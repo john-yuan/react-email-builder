@@ -9,7 +9,7 @@ import {
 
 import type { EmailBuilderBlock } from '../types'
 import type { ColumnsBlockAttrs } from '../blocks/columns/types'
-import { createPlaceholder, generateId } from '../utils'
+import { copyBlock, createPlaceholder } from '../utils'
 
 export function useEmailBuilderConfig() {
   return useContext(EmailBuilderConfigContext)
@@ -247,46 +247,21 @@ export function useMoveBlock() {
 
 export function useCopyBlock() {
   const setState = useSetEmailBuilderState()
+  const config = useEmailBuilderConfig()
 
   return useCallback(
     (blockId: string) => {
       setState((prev) => {
-        let copiedBlockId = ''
-
-        const copyBlock = (block: EmailBuilderBlock): EmailBuilderBlock => {
-          copiedBlockId = generateId()
-
-          if (block.type === 'columns') {
-            const cols = block as EmailBuilderBlock<ColumnsBlockAttrs>
-            return {
-              ...cols,
-              id: copiedBlockId,
-              attrs: {
-                ...cols.attrs,
-                columns: cols.attrs.columns.map((column) => ({
-                  ...column,
-                  id: generateId(),
-                  blocks: column.blocks.map((columnBlock) => ({
-                    ...columnBlock,
-                    id: generateId()
-                  }))
-                }))
-              }
-            }
-          }
-
-          return {
-            ...block,
-            id: copiedBlockId
-          }
-        }
+        let copiedBlockId: string | undefined
 
         const copy = (blocks: EmailBuilderBlock[]) => {
           const newBlocks: EmailBuilderBlock[] = []
           blocks.forEach((block) => {
             newBlocks.push(block)
             if (block.id === blockId) {
-              newBlocks.push(copyBlock(block))
+              const copied = copyBlock(block, config)
+              copiedBlockId = copied.id
+              newBlocks.push(copied)
             }
           })
           return newBlocks
@@ -309,8 +284,6 @@ export function useCopyBlock() {
           return block
         })
 
-        console.log(prev.selectedId, copiedBlockId)
-
         return {
           ...prev,
           blocks,
@@ -318,6 +291,6 @@ export function useCopyBlock() {
         }
       })
     },
-    [setState]
+    [setState, config]
   )
 }
