@@ -109,7 +109,7 @@ function BlockIcon({ block }: { block: EmailBuilderBlockConfig }) {
         document.body.classList.remove(css.body)
 
         setState((prev) => {
-          let added = false
+          let addedBlockId: string | undefined
 
           const addBlock = (blocks: EmailBuilderBlock[]) => {
             const newBlocks: EmailBuilderBlock[] = []
@@ -128,9 +128,9 @@ function BlockIcon({ block }: { block: EmailBuilderBlockConfig }) {
                   newBlocks.push(newBlock)
                 }
 
-                added = true
+                addedBlockId = newBlock.id
               } else if (block.type === 'columns') {
-                if (added) {
+                if (addedBlockId) {
                   newBlocks.push(block)
                 } else {
                   const oldCols = block as EmailBuilderBlock<ColumnsBlockAttrs>
@@ -163,6 +163,8 @@ function BlockIcon({ block }: { block: EmailBuilderBlockConfig }) {
           return {
             ...prev,
             blocks: nextBlocks,
+            tab: 'settings',
+            selectedId: addedBlockId,
             draggingType: undefined,
             dragover: undefined,
             dragoverId: undefined
