@@ -48,7 +48,7 @@ const config: EmailBuilderConfig = {
 export default function App() {
   const [key, setKey] = useState(0)
   const [state, setState] = useState<EmailBuilderState>({
-    pageStyle: {
+    style: {
       padding: [32, 0, 32, 0],
       bgColor: '#ffffff'
     },

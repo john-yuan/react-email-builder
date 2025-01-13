@@ -158,16 +158,14 @@ export interface EmailBuilderBlockStyle {
    * The block padding in pixel: `[top, right, bottom, left]`.
    */
   padding?: (number | null)[]
-}
 
-export interface EmailBuilderSectionStyle {
   /**
    * The section background color.
    */
-  bgColor?: string
+  sectionBgColor?: string
 
   /**
-   * Set to `yes` make the section full-width.
+   * Indicates if the section full-width. Default `yes`.
    */
   full?: 'yes' | 'no'
 }
@@ -176,8 +174,7 @@ export interface EmailBuilderBlock<Attrs extends object = any> {
   id: string
   type: string
   attrs: Attrs
-  blockStyle: EmailBuilderBlockStyle
-  sectionStyle: EmailBuilderSectionStyle
+  style: EmailBuilderBlockStyle
 }
 
 export interface EmailBuilderProps {
@@ -202,7 +199,7 @@ export interface EmailBuilderState {
   /**
    * The page style.
    */
-  pageStyle?: EmailBuilderPageStyle
+  style?: EmailBuilderPageStyle
 
   /**
    * The blocks on the canvas.
@@ -238,7 +235,7 @@ export interface EmailBuilderState {
 }
 
 export interface SerializedEmailBuilderState {
-  pageStyle?: EmailBuilderPageStyle
+  style?: EmailBuilderPageStyle
   blocks: EmailBuilderBlock<any>[]
 }
 

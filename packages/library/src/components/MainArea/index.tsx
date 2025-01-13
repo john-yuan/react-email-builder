@@ -12,7 +12,7 @@ export function MainArea() {
   }))
 
   const state = useEmailBuilderState()
-  const style = state.pageStyle || {}
+  const style = state.style || {}
   const setState = useSetEmailBuilderState()
   const clearSelected = useCallback(
     (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {

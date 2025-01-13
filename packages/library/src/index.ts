@@ -25,7 +25,6 @@ export type {
   EmailBuilderBlock,
   EmailBuilderBlockConfig,
   EmailBuilderBlockStyle,
-  EmailBuilderSectionStyle,
   EmailBuilderConfig,
   EmailBuilderProps,
   EmailBuilderState,

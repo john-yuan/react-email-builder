@@ -28,11 +28,8 @@ export function createBaseBlock(type: string): EmailBuilderBlock {
     id: generateId(),
     type,
     attrs: {},
-    blockStyle: {
+    style: {
       padding: [10, 20, 10, 20]
-    },
-    sectionStyle: {
-      full: 'yes'
     }
   }
 }
@@ -245,7 +242,7 @@ export function serializeEmailBuilderState(
   }
 
   return {
-    pageStyle: state.pageStyle,
+    style: state.style,
     blocks: state.blocks.map(exportBlock)
   }
 }
@@ -263,8 +260,7 @@ export function deserializeEmailBuilderState(
     }
 
     deserialized.attrs = deserialized.attrs || {}
-    deserialized.blockStyle = deserialized.blockStyle || {}
-    deserialized.sectionStyle = deserialized.sectionStyle || {}
+    deserialized.style = deserialized.style || {}
 
     if (deserialized.type === 'columns') {
       let attrs = deserialized.attrs as ColumnsBlockAttrs
@@ -282,7 +278,7 @@ export function deserializeEmailBuilderState(
   }
 
   return {
-    pageStyle: state.pageStyle,
+    style: state.style,
     blocks: state.blocks.map(importBlock)
   }
 }

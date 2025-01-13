@@ -8,7 +8,7 @@ import { useEmailBuilderState, useSetEmailBuilderState } from '../../hooks'
 export function PageEditor() {
   const state = useEmailBuilderState()
   const setState = useSetEmailBuilderState()
-  const style = state.pageStyle || {}
+  const style = state.style || {}
   return (
     <>
       <div style={{ padding: 16 }}>Page</div>
@@ -19,7 +19,7 @@ export function PageEditor() {
             onChange={(bgColor) => {
               setState((prev) => ({
                 ...prev,
-                pageStyle: {
+                style: {
                   ...style,
                   bgColor
                 }
@@ -33,7 +33,7 @@ export function PageEditor() {
           onChange={(padding) => {
             setState((prev) => ({
               ...prev,
-              pageStyle: {
+              style: {
                 ...style,
                 padding
               }

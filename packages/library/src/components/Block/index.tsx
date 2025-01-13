@@ -96,7 +96,6 @@ export function Block({
     content: ns('content')
   }))
 
-  const { sectionStyle } = block
   const config = useEmailBuilderConfig()
 
   const setState = useSetEmailBuilderState()
@@ -119,10 +118,10 @@ export function Block({
   return (
     <div
       className={clsx(css.section, {
-        [css.full]: sectionStyle.full === 'yes'
+        [css.full]: block.style.full !== 'no'
       })}
       style={{
-        backgroundColor: sectionStyle.bgColor
+        backgroundColor: block.style.sectionBgColor
       }}
     >
       <div

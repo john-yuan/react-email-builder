@@ -14,7 +14,7 @@ export function columnsBlock(): EmailBuilderBlockConfig<ColumnsBlockAttrs> {
     createBlock: (base) => {
       const block = base as any as EmailBuilderBlock<ColumnsBlockAttrs>
       block.attrs = { columns: [createColumn(), createColumn()] }
-      block.blockStyle.padding = [20, 0, 20, 0]
+      block.style.padding = [20, 0, 20, 0]
       return block
     },
     blockComponent: ColumnsBlock,

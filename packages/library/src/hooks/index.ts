@@ -27,7 +27,7 @@ export function useSelectedBlock() {
 }
 
 export function useBlockStyle(block: EmailBuilderBlock) {
-  const style = block.blockStyle
+  const { style } = block
   return useMemo<React.CSSProperties>(() => {
     const p = style.padding || []
     const u = undefined

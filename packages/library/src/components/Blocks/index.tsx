@@ -107,7 +107,7 @@ function Columns({
   selectedId?: EmailBuilderState['selectedId']
 }) {
   const dragging = !!draggingType
-  const blockStyle = useBlockStyle(block)
+  const style = useBlockStyle(block)
   const childrenSelected = useMemo(() => {
     if (selectedId && block.id !== selectedId) {
       return block.attrs.columns.some((col) => {
@@ -140,7 +140,7 @@ function Columns({
         className={clsx(css.root, {
           [css.notAllowed]: draggingType === 'columns'
         })}
-        style={blockStyle}
+        style={style}
       >
         <div className={css.grid + ' ' + css.grid + '-' + columns.length}>
           {columns.map((column) => {

@@ -6,7 +6,11 @@ import {
   useSelectedBlock,
   useSetEmailBuilderState
 } from '../../hooks'
-import type { EmailBuilderBlock, EmailBuilderBlockConfig } from '../../types'
+import type {
+  EmailBuilderBlock,
+  EmailBuilderBlockConfig,
+  EmailBuilderBlockStyle
+} from '../../types'
 import type {
   ColumnsBlockAttrs,
   EmailBuilderColumn,
@@ -57,8 +61,16 @@ function Editor({
   const isPlaceholder = block.type === 'placeholder'
   const setState = useSetEmailBuilderState()
   const setBlock = useBlockEditor(block.id)
-  const blockStyle = block.blockStyle || {}
-  const sectionStyle = block.sectionStyle || {}
+  const style = block.style || {}
+  const setStyle = (newStyle: Partial<EmailBuilderBlockStyle>) => {
+    setBlock((prev) => ({
+      ...prev,
+      style: {
+        ...prev.style,
+        ...newStyle
+      }
+    }))
+  }
 
   return (
     <div style={{ paddingBottom: 64 }}>
@@ -75,29 +87,17 @@ function Editor({
           {block.type !== 'columns' ? (
             <Field label="Background color">
               <ColorPicker
-                color={blockStyle.bgColor}
+                color={style.bgColor}
                 onChange={(bgColor) => {
-                  setBlock((prev) => ({
-                    ...prev,
-                    blockStyle: {
-                      ...prev.blockStyle,
-                      bgColor
-                    }
-                  }))
+                  setStyle({ bgColor })
                 }}
               />
             </Field>
           ) : null}
           <PaddingInput
-            value={blockStyle.padding}
+            value={style.padding}
             onChange={(padding) => {
-              setBlock((prev) => ({
-                ...prev,
-                blockStyle: {
-                  ...prev.blockStyle,
-                  padding
-                }
-              }))
+              setStyle({ padding })
             }}
           />
         </FormSection>
@@ -106,33 +106,21 @@ function Editor({
         <FormSection name="Section attributes" defaultOpen>
           <Field label="Background color">
             <ColorPicker
-              color={sectionStyle.bgColor}
-              onChange={(bgColor) => {
-                setBlock((prev) => ({
-                  ...prev,
-                  sectionStyle: {
-                    ...prev.sectionStyle,
-                    bgColor
-                  }
-                }))
+              color={style.sectionBgColor}
+              onChange={(sectionBgColor) => {
+                setStyle({ sectionBgColor })
               }}
             />
           </Field>
           <Field label="Fill parent width">
             <Select
-              value={sectionStyle.full || 'no'}
+              value={style.full || 'yes'}
               options={[
                 { value: 'yes', label: 'Yes' },
                 { value: 'no', label: 'No' }
               ]}
               onChange={(full) => {
-                setBlock((prev) => ({
-                  ...prev,
-                  sectionStyle: {
-                    ...prev.sectionStyle,
-                    full: full as any
-                  }
-                }))
+                setStyle({ full: full === 'no' ? 'no' : undefined })
               }}
             />
           </Field>
