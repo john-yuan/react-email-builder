@@ -11,23 +11,16 @@ import type {
   SerializedEmailBuilderState
 } from '../types'
 
-let counter = 0
-let prefix: string | null = null
+let counter = -1
 
 export function generateId() {
-  if (prefix == null) {
-    prefix = Math.random().toFixed(6).slice(-6)
-  }
-
-  if (counter >= Number.MAX_SAFE_INTEGER) {
-    counter = 0
+  if (counter > 999999) {
+    counter = -1
   }
 
   counter += 1
 
-  const time = Date.now().toString().slice(-6)
-
-  return prefix + '-' + time + '-' + counter
+  return Date.now().toString(16) + '-' + counter.toString(16)
 }
 
 export function createBaseBlock(type: string): EmailBuilderBlock {
