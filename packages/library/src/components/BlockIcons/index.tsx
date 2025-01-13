@@ -163,7 +163,7 @@ function BlockIcon({ block }: { block: EmailBuilderBlockConfig }) {
           return {
             ...prev,
             blocks: nextBlocks,
-            tab: 'settings',
+            tab: addedBlockId ? 'settings' : prev.tab,
             selectedId: addedBlockId,
             draggingType: undefined,
             dragover: undefined,
