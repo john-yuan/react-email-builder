@@ -7,7 +7,13 @@ export function useTooltip({
   hideDelay,
   placement
 }: {
+  /**
+   * Default `300`.
+   */
   showDelay?: number
+  /**
+   * Default `100`.
+   */
   hideDelay?: number
   placement?: Placement
 } = {}) {
@@ -44,7 +50,7 @@ export function useTooltip({
             showId = setTimeout(() => {
               showId = null
               setOpen(true)
-            }, showDelay || 300)
+            }, showDelay ?? 300)
           }
         }
 
@@ -61,7 +67,7 @@ export function useTooltip({
           ref.current.hideId = setTimeout(() => {
             ref.current.hideId = null
             setOpen(false)
-          }, hideDelay || 100)
+          }, hideDelay ?? 100)
         }
 
         node.addEventListener('mouseenter', mouseenter, false)
