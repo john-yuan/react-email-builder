@@ -1,3 +1,5 @@
 export interface DividerBlockAttrs {
-  width: number
+  height: number
+  type: 'solid' | 'dashed' | 'dotted'
+  color: string
 }

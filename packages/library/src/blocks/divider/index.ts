@@ -12,7 +12,7 @@ export function dividerBlock(): EmailBuilderBlockConfig<DividerBlockAttrs> {
     icon: React.createElement(Icon, { name: 'divider' }),
     createBlock: (base) => {
       const block = base as any as EmailBuilderBlock<DividerBlockAttrs>
-      block.attrs = { width: 1 }
+      block.attrs = { height: 1, type: 'solid', color: '#EEEEEE' }
       return block
     },
     blockComponent: DividerBlock,
