@@ -8,6 +8,7 @@ import { Select } from '../../../controls/Select'
 import { SizeInput } from '../../../controls/SizeInput'
 import { FileButton } from '../../../controls/FileButton'
 import { Alert } from '../../../controls/Alert'
+import { Line } from '../../../controls/Line'
 
 export interface Props {
   block: EmailBuilderBlock<ImageBlockAttrs>
@@ -32,6 +33,8 @@ export function ImageBlockEditor({ block }: Props) {
           }}
         />
       </Field>
+
+      <Line />
 
       <Field label="Fill parent width">
         <Select
