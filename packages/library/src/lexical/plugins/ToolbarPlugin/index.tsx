@@ -340,24 +340,8 @@ export function ToolbarPlugin({
     [activeEditor]
   )
 
-  const prevent = useCallback(
-    (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-      const target = e.target as Element
-
-      if (target && typeof target.tagName === 'string') {
-        const tag = target.tagName.toLowerCase()
-        if (tag === 'input' || tag === 'textarea') {
-          return
-        }
-      }
-
-      e.preventDefault()
-    },
-    []
-  )
-
   return (
-    <div className={css.root} onMouseDown={prevent}>
+    <div className={css.root}>
       <FontFormat
         activeEditor={activeEditor}
         format="bold"
@@ -477,6 +461,9 @@ function FontFormat({
       <div
         ref={triggerRef}
         className={clsx(css.icon, { [css.active]: active })}
+        onMouseDown={(e) => {
+          e.preventDefault()
+        }}
         onClick={() => {
           activeEditor.dispatchCommand(FORMAT_TEXT_COMMAND, format)
         }}
