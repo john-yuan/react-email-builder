@@ -34,6 +34,16 @@ export function ImageBlockEditor({ block }: Props) {
         />
       </Field>
 
+      <Field label="Alternate Text" vertical>
+        <TextInput
+          textarea
+          value={attrs.alt}
+          onChange={(alt) => {
+            setAttrs({ alt })
+          }}
+        />
+      </Field>
+
       <Line />
 
       <Field label="Fill parent width">

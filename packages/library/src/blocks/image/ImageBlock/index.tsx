@@ -22,6 +22,7 @@ export function ImageBlock({ block }: Props) {
         {attrs.src ? (
           <img
             src={attrs.src}
+            alt={attrs.alt}
             style={{
               display: 'inline-block',
               width:
