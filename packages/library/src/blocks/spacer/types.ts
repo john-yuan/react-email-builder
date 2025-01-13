@@ -1,1 +1,3 @@
-export interface SpacerBlockAttrs {}
+export interface SpacerBlockAttrs {
+  height: number
+}

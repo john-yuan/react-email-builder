@@ -12,7 +12,8 @@ export function spacerBlock(): EmailBuilderBlockConfig<SpacerBlockAttrs> {
     icon: React.createElement(Icon, { name: 'spacer' }),
     createBlock: (base) => {
       const block = base as any as EmailBuilderBlock<SpacerBlockAttrs>
-      block.attrs = {}
+      block.attrs = { height: 32 }
+      block.style.padding = undefined
       return block
     },
     blockComponent: SpacerBlock,
