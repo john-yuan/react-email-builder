@@ -12,7 +12,7 @@ export function imageBlock(): EmailBuilderBlockConfig<ImageBlockAttrs> {
     icon: React.createElement(Icon, { name: 'image' }),
     createBlock: (base) => {
       const block = base as any as EmailBuilderBlock<ImageBlockAttrs>
-      block.attrs = {}
+      block.attrs = { width: 580, align: 'center' }
       return block
     },
     blockComponent: ImageBlock,
