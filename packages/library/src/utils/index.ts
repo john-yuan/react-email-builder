@@ -1,4 +1,7 @@
-import type { ColumnsBlockAttrs } from '../blocks/columns/types'
+import type {
+  ColumnsBlockAttrs,
+  EmailBuilderColumn
+} from '../blocks/columns/types'
 import type { PlaceholderAttrs } from '../blocks/placeholder/types'
 import type {
   EmailBuilderBlock,
@@ -51,6 +54,14 @@ export function createPlaceholder(
   block.attrs = attrs || {}
 
   return block
+}
+
+export function createColumn(): EmailBuilderColumn {
+  return {
+    id: generateId(),
+    attrs: {},
+    blocks: [createPlaceholder({ inColumn: true })]
+  }
 }
 
 export function createBlock(

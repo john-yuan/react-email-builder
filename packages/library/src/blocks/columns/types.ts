@@ -13,4 +13,5 @@ export interface EmailBuilderColumn {
 
 export interface ColumnsBlockAttrs {
   columns: EmailBuilderColumn[]
+  backup?: EmailBuilderColumn[]
 }

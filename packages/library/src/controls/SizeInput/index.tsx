@@ -4,7 +4,7 @@ import { getCss } from '../../utils'
 
 export interface Props {
   value?: number
-  unit: string
+  unit?: string
   onChange: (value: number | undefined) => void
   min?: number
   max?: number
@@ -88,7 +88,7 @@ export function SizeInput({
             }}
           />
         </div>
-        <div className={css.unit}>{unit}</div>
+        {unit ? <div className={css.unit}>{unit}</div> : null}
       </div>
       {showControls ? (
         <div className={css.actions}>

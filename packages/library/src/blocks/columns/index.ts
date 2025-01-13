@@ -2,19 +2,11 @@ import React from 'react'
 import { Icon } from '../../components/Icon'
 import { ColumnsBlock } from './ColumnsBlock'
 import { ColumnsBlockEditor } from './ColumnsBlockEditor'
-import { createPlaceholder, generateId } from '../../utils'
+import { createColumn } from '../../utils'
 import type { EmailBuilderBlock, EmailBuilderBlockConfig } from '../../types'
-import type { EmailBuilderColumn, ColumnsBlockAttrs } from './types'
+import type { ColumnsBlockAttrs } from './types'
 
 export function columnsBlock(): EmailBuilderBlockConfig<ColumnsBlockAttrs> {
-  const createColumn = (): EmailBuilderColumn => {
-    return {
-      id: generateId(),
-      attrs: {},
-      blocks: [createPlaceholder({ inColumn: true })]
-    }
-  }
-
   return {
     type: 'columns',
     name: 'Columns',

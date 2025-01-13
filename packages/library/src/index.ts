@@ -5,6 +5,7 @@ export {
   generateId,
   createBlock,
   createBaseBlock,
+  createColumn,
   createPlaceholder,
   namespace,
   varsClass,
