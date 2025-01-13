@@ -17,6 +17,20 @@ export interface EmailBuilderConfig {
   upload?: FileUploadFunction
 
   /**
+   * The font family list.
+   *
+   * @example
+   * [
+   *   { value: 'Arial, helvetica, sans-serif', label: 'Arial' }
+   *   { value: 'Georgia, serif', label: 'Georgia' },
+   * ]
+   */
+  fonts?: {
+    value: string
+    label: string
+  }[]
+
+  /**
    * The text editor config.
    */
   textEditor?: {
@@ -29,20 +43,6 @@ export interface EmailBuilderConfig {
      * The variable list.
      */
     variables?: TextEditorVariable[]
-
-    /**
-     * The font family list.
-     *
-     * @example
-     * [
-     *   { value: 'Arial, helvetica, sans-serif', label: 'Arial' }
-     *   { value: 'Georgia, serif', label: 'Georgia' },
-     * ]
-     */
-    fonts?: {
-      value: string
-      label: string
-    }[]
 
     /**
      * The default font. If not set, the first font in `fonts` will be
