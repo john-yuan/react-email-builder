@@ -318,7 +318,7 @@ export function ToolbarPlugin({
       INSERT_VARIABLE_COMMAND,
       (payload) => {
         const node = $createVariableNode(
-          payload.value,
+          payload.key,
           payload.placeholder || payload.label
         )
         $insertNodes([node])
@@ -783,13 +783,21 @@ function Variables({
 
   return (
     <IconPopover icon="variable" title={title} {...popover}>
-      <Options
-        options={variables}
-        onChange={(option) => {
-          popover.setOpen(false)
-          activeEditor.dispatchCommand(INSERT_VARIABLE_COMMAND, option)
-        }}
-      />
+      {popover.open ? (
+        <Options
+          options={variables.map((item) => ({
+            ...item,
+            value: item.key
+          }))}
+          onChange={(option) => {
+            popover.setOpen(false)
+            activeEditor.dispatchCommand(INSERT_VARIABLE_COMMAND, {
+              ...option,
+              key: option.value
+            })
+          }}
+        />
+      ) : null}
     </IconPopover>
   )
 }

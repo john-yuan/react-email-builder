@@ -4,6 +4,7 @@ import type { SpacerBlockAttrs } from './types'
 import { Icon } from '../../components/Icon'
 import { SpacerBlock } from './SpacerBlock'
 import { SpacerBlockEditor } from './SpacerBlockEditor'
+import { createBlockAttrs, px, renderTag } from '../../utils/mjml'
 
 export function spacerBlock(): EmailBuilderBlockConfig<SpacerBlockAttrs> {
   return {
@@ -17,6 +18,13 @@ export function spacerBlock(): EmailBuilderBlockConfig<SpacerBlockAttrs> {
       return block
     },
     blockComponent: SpacerBlock,
-    editorComponent: SpacerBlockEditor
+    editorComponent: SpacerBlockEditor,
+    renderMJML: (block) => {
+      return renderTag('mj-spacer', {
+        attrs: createBlockAttrs(block, {
+          height: px(block.attrs.height)
+        })
+      })
+    }
   }
 }

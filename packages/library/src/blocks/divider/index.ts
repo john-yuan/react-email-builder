@@ -4,6 +4,7 @@ import type { DividerBlockAttrs } from './types'
 import { Icon } from '../../components/Icon'
 import { DividerBlock } from './DividerBlock'
 import { DividerBlockEditor } from './DividerBlockEditor'
+import { color, createBlockAttrs, renderTag } from '../../utils/mjml'
 
 export function dividerBlock(): EmailBuilderBlockConfig<DividerBlockAttrs> {
   return {
@@ -16,6 +17,16 @@ export function dividerBlock(): EmailBuilderBlockConfig<DividerBlockAttrs> {
       return block
     },
     blockComponent: DividerBlock,
-    editorComponent: DividerBlockEditor
+    editorComponent: DividerBlockEditor,
+    renderMJML: (block) => {
+      const { attrs } = block
+      return renderTag('mj-divider', {
+        attrs: createBlockAttrs(block, {
+          'border-color': color(attrs.color) || '#EEEEEE',
+          'border-width': (attrs.height || 1) + 'px',
+          'border-style': attrs.type || 'solid'
+        })
+      })
+    }
   }
 }

@@ -36,7 +36,7 @@ export class VariableNode extends TextNode {
     const dom = super.createDOM(config, editor)
 
     dom.className = clsx(dom.className, namespace('VariableNode')())
-    dom.setAttribute('data-variable-value', '{' + this.__var_value + '}')
+    dom.setAttribute('data-variable-value', '(' + this.__var_value + ')')
 
     return dom
   }

@@ -21,12 +21,12 @@ export default function App() {
   const variables = useMemo<TextEditorVariable[]>(
     () => [
       {
-        value: 'receiver.name',
+        key: 'receiver.name',
         label: 'Receiver Name',
         placeholder: '{{Receiver Name}}'
       },
       {
-        value: 'receiver.email',
+        key: 'receiver.email',
         label: 'Receiver Email',
         placeholder: '{{Receiver Email}}'
       }

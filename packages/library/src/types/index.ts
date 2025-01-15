@@ -4,6 +4,7 @@ import type {
   ColumnsBlockAttrs
 } from '../blocks/columns/types'
 import type { EditorState } from 'lexical'
+import type { GenerateOptions } from '../utils/mjml'
 
 export interface EmailBuilderConfig {
   /**
@@ -158,6 +159,20 @@ export interface EmailBuilderBlockConfig<
    * Specify the function to deserialize the block attrs.
    */
   importJSON?: (json: SerializedAttrs) => Attrs
+
+  /**
+   * The code returned by this function will be added as child of the
+   * `<mj-head>` tag.
+   */
+  renderMJMLHeadTags?: () => string
+
+  /**
+   * Specify the function to render the block to MJML code.
+   */
+  renderMJML: (
+    block: EmailBuilderBlock<Attrs>,
+    options: GenerateOptions
+  ) => string
 }
 
 export type FileUploadFunction = (file: File) => Promise<{ url: string }>
@@ -185,17 +200,51 @@ export interface EmailBuilderBlockStyle {
 }
 
 export interface EmailBuilderBlock<Attrs extends object = any> {
+  /**
+   * The block id.
+   */
   id: string
+
+  /**
+   * The block type.
+   */
   type: string
+
+  /**
+   * The block attributes.
+   */
   attrs: Attrs
+
+  /**
+   * The block style.
+   */
   style: EmailBuilderBlockStyle
 }
 
 export interface EmailBuilderProps {
-  config: EmailBuilderConfig
+  /**
+   * Specify the root element class name.
+   */
   className?: string
+
+  /**
+   * Specify the root element style.
+   */
   style?: React.CSSProperties
+
+  /**
+   * The email builder config.
+   */
+  config: EmailBuilderConfig
+
+  /**
+   * The email builder state.
+   */
   state: EmailBuilderState
+
+  /**
+   * The function to update the state.
+   */
   setState: React.Dispatch<React.SetStateAction<EmailBuilderState>>
 
   /**
@@ -267,7 +316,18 @@ export interface TextEditorState {
 }
 
 export interface TextEditorVariable {
-  value: string
+  /**
+   * The variable key. Cannot contain `(` or `)` in it.
+   */
+  key: string
+
+  /**
+   * The label displayed in the dropdown list.
+   */
   label: string
+
+  /**
+   * The text displayed in the text editor.
+   */
   placeholder?: string
 }

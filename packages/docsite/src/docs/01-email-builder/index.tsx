@@ -3,6 +3,7 @@ import type { EmailBuilderConfig, EmailBuilderState } from 'react-email-builder'
 import {
   buttonBlock,
   columnsBlock,
+  generateMJML,
   createBlock,
   deserializeEmailBuilderState,
   dividerBlock,
@@ -24,12 +25,12 @@ const config: EmailBuilderConfig = {
   textEditor: {
     variables: [
       {
-        value: 'receiver.name',
+        key: 'receiver.name',
         label: 'Receiver Name',
         placeholder: '{{Receiver Name}}'
       },
       {
-        value: 'receiver.email',
+        key: 'receiver.email',
         label: 'Receiver Email',
         placeholder: '{{Receiver Email}}'
       }
@@ -88,9 +89,23 @@ export default function App() {
             localStorage.setItem(EMAIL_KEY, JSON.stringify(json))
           }}
         >
-          serialize
+          save
+        </button>{' '}
+        <button onClick={deserialize}>restore</button>{' '}
+        <button
+          onClick={() => {
+            const mjml = generateMJML({
+              state,
+              config,
+              replaceVariable: (key) => {
+                return '%' + key + '%'
+              }
+            })
+            console.log(mjml)
+          }}
+        >
+          generateMJML
         </button>
-        <button onClick={deserialize}>deserialize</button>
       </div>
       <div style={{ background: '#fff', maxWidth: '1000px', margin: '0 auto' }}>
         <EmailBuilder

@@ -20,6 +20,18 @@ export {
 } from './utils'
 
 export {
+  color,
+  generateMJML,
+  createBlockAttrs,
+  lines,
+  px,
+  renderBlock,
+  renderTag,
+  padding,
+  replaceHtmlVariables
+} from './utils/mjml'
+
+export {
   useBlockAttrsEditor,
   useBlockEditor,
   useBlockStyle,
@@ -53,6 +65,13 @@ export type {
   TextEditorVariable,
   SerializedEmailBuilderState
 } from './types'
+
+export type {
+  GenerateOptions,
+  RenderTagOptions,
+  TagAttributes,
+  ReplaceVariableFn
+} from './utils/mjml'
 
 export type { ColumnsBlockAttrs } from './blocks/columns/types'
 export type { ButtonBlockAttrs } from './blocks/button/types'

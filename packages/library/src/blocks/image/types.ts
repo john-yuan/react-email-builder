@@ -2,7 +2,10 @@ export interface ImageBlockAttrs {
   src?: string
   alt?: string
   width?: number // px
-  full?: 'yes' | 'no' // default `yes`
+  /**
+   * default `yes`
+   */
+  full?: 'yes' | 'no'
   align?: 'left' | 'right' | 'center'
   href?: string
 }

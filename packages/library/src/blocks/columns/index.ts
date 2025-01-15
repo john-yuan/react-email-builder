@@ -34,6 +34,11 @@ export function columnsBlock(): EmailBuilderBlockConfig<ColumnsBlockAttrs> {
       }
     },
     blockComponent: ColumnsBlock,
-    editorComponent: ColumnsBlockEditor
+    editorComponent: ColumnsBlockEditor,
+    renderMJML: () => {
+      // The `columns` block will be handled by `generateMJML`.
+      // So we do nothing here.
+      return ''
+    }
   }
 }
