@@ -231,19 +231,35 @@ export function generateMJML(options: GenerateOptions) {
     )
   }
 
+  const textColor = color(state.style?.color || '#000000')
+  const fontSize = px(state.style?.fontSize ?? 14)
+  const fontFamily = state.style?.fontFamily ?? 'Arial, helvetica, sans-serif'
+
   return renderTag('mjml', {
     children: [
       renderTag('mj-head', {
         children: lines(
           [
+            renderTag('mj-style', {
+              children: [
+                'html, body { color: ' +
+                  textColor +
+                  '; font-size: ' +
+                  fontSize +
+                  '; font-family: ' +
+                  fontFamily +
+                  '; }'
+              ]
+            }),
             renderTag('mj-breakpoint', { attrs: { width: '600px' } }),
             renderTag('mj-attributes', {
               children: [
                 renderTag('mj-all', {
                   attrs: {
                     padding: '0px',
-                    'font-size': '14px',
-                    'font-family': 'Arial, helvetica, sans-serif'
+                    color: textColor,
+                    'font-size': fontSize,
+                    'font-family': fontFamily
                   }
                 })
               ]

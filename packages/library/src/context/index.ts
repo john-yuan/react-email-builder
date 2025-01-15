@@ -20,3 +20,9 @@ export const SetEmailBuilderStateContext = createContext<
 
 export const EmailBuilderSelectedBlockInfoContext =
   createContext<EmailBuilderSelectedBlockInfo>({})
+
+export const EmailBuilderDefaultFontStyleContext = createContext<{
+  fontSize?: number
+  fontFamily?: string
+  color?: string
+}>({})

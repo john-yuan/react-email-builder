@@ -1,24 +1,22 @@
 .REB-Select {
-  &-selected {
-    position: relative;
-    z-index: 1;
-    display: inline-block;
-    border: 1px solid var(--reb-control-border-color);
-    height: 32px;
-    line-height: 30px;
-    padding: 0 10px;
-    box-sizing: border-box;
-    display: flex;
-    cursor: pointer;
-    min-width: 1em;
+  position: relative;
+  z-index: 1;
+  display: inline-block;
+  border: 1px solid var(--reb-control-border-color);
+  height: 32px;
+  line-height: 30px;
+  padding: 0 10px;
+  box-sizing: border-box;
+  display: flex;
+  cursor: pointer;
+  min-width: 1em;
 
-    &:hover {
-      background: var(--reb-control-hover-color);
-    }
+  &:hover {
+    background: var(--reb-control-hover-color);
+  }
 
-    &:active {
-      background: var(--reb-control-active-color);
-    }
+  &:active {
+    background: var(--reb-control-active-color);
   }
 
   &-open {
@@ -40,6 +38,34 @@
     flex-direction: column;
     justify-content: center;
     margin-left: 8px;
+  }
+
+  &-caret,
+  &-clear {
+    height: 14px;
+    font-size: 14px;
+    width: 14px;
+
+    svg {
+      display: block;
+    }
+  }
+
+  &-clear {
+    display: none;
+    opacity: 0.65;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  &-clearable:hover &-caret {
+    display: none;
+  }
+
+  &-clearable:hover &-clear {
+    display: block;
   }
 
   &-list {

@@ -37,7 +37,7 @@ const TextEditor = memo(function TextEditor({
   placeholderClassName: string
   onChange: (state: TextEditorState) => void
 }) {
-  const { upload, fonts, textEditor } = useEmailBuilderConfig()
+  const { upload, fonts, defaultFont, textEditor } = useEmailBuilderConfig()
   const { placeholder, ...toolbar } = textEditor || {}
   const css = getCss('TextBlock', (ns) => ({
     root: ns(),
@@ -52,7 +52,12 @@ const TextEditor = memo(function TextEditor({
         {selected ? (
           <div className={css.wrapper}>
             <div className={css.toolbar}>
-              <ToolbarPlugin upload={upload} fonts={fonts} {...toolbar} />
+              <ToolbarPlugin
+                upload={upload}
+                fonts={fonts}
+                defaultFont={defaultFont}
+                {...toolbar}
+              />
             </div>
           </div>
         ) : null}

@@ -8,15 +8,24 @@ import type { Placement } from '@floating-ui/dom'
 
 export interface Props {
   value?: string
-  onChange: (value: string) => void
+  onChange: (value?: string) => void
   options: {
     value: string
     label: string
   }[]
   placement?: Placement
+  placeholder?: string
+  clearable?: boolean
 }
 
-export function Select({ options, value, placement, onChange }: Props) {
+export function Select({
+  options,
+  value,
+  placement,
+  placeholder,
+  clearable,
+  onChange
+}: Props) {
   const selected = options.find((el) => el.value === value)
   const { open, setOpen, popoverRef, triggerRef } = usePopover({
     offset: 5,
@@ -25,28 +34,53 @@ export function Select({ options, value, placement, onChange }: Props) {
 
   const css = getCss('Select', (ns) => ({
     root: ns(),
-    selected: ns('selected'),
+    clearable: ns('clearable'),
     open: ns('open'),
     text: ns('text'),
     icon: ns('icon'),
     option: ns('option'),
     label: ns('label'),
     check: ns('check'),
-    list: ns('list')
+    list: ns('list'),
+    caret: ns('caret'),
+    clear: ns('clear')
   }))
 
   return (
     <>
       <div
         ref={triggerRef}
-        className={clsx(css.selected, open ? css.open : '')}
+        className={clsx(css.root, {
+          [css.open]: open,
+          [css.clearable]: selected && clearable && !open
+        })}
         onClick={() => {
           setOpen(!open)
         }}
       >
-        <div className={css.text}>{selected?.label || value}</div>
+        <div className={css.text}>
+          {selected ? (
+            selected.label ?? value
+          ) : (
+            <span style={{ opacity: 0.65 }}>{placeholder ?? 'Select'}</span>
+          )}
+        </div>
         <div className={css.icon}>
-          <Icon name={open ? 'caret-up' : 'caret-down'} />
+          <div className={css.caret}>
+            <Icon name={open ? 'caret-up' : 'caret-down'} />
+          </div>
+          {selected && clearable ? (
+            <div
+              className={css.clear}
+              onClick={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                onChange()
+              }}
+            >
+              <Icon name="clear" />
+            </div>
+          ) : null}
         </div>
       </div>
       <Popover open={open} popoverRef={popoverRef}>

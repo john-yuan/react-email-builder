@@ -32,6 +32,18 @@ export interface EmailBuilderConfig {
   }[]
 
   /**
+   * The default font. If not set, the first font in `fonts` will be
+   * used.
+   *
+   * If you set a default font, don't forget to overwrite the
+   * `font-family` of the css class named `.REB-Lexical-editor` and
+   * `.REB-Lexical-placeholder`.
+   *
+   * @example 'Arial, helvetica, sans-serif'
+   */
+  defaultFont?: string
+
+  /**
    * The text editor config.
    */
   textEditor?: {
@@ -44,18 +56,6 @@ export interface EmailBuilderConfig {
      * The variable list.
      */
     variables?: TextEditorVariable[]
-
-    /**
-     * The default font. If not set, the first font in `fonts` will be
-     * used.
-     *
-     * If you set a default font, don't forget to overwrite the
-     * `font-family` of the css class named `.REB-Lexical-editor` and
-     * `.REB-Lexical-placeholder`.
-     *
-     * @example 'Arial, helvetica, sans-serif'
-     */
-    defaultFont?: string
 
     /**
      * The font size list.
@@ -254,7 +254,30 @@ export interface EmailBuilderProps {
 }
 
 export interface EmailBuilderPageStyle {
+  /**
+   * Default text color. The default value is `#000000`.
+   */
+  color?: string
+
+  /**
+   * Default font size. The default value is `14`.
+   */
+  fontSize?: number
+
+  /**
+   * Default font family. The default value is `Arial, helvetica, sans-serif`.
+   */
+  fontFamily?: string
+
+  /**
+   * Specify the page background color.
+   */
   bgColor?: string
+
+  /**
+   * The page padding. The format is `[top, right, bottom, left]`.
+   * The right and left padding will be ignored.
+   */
   padding?: (number | null)[]
 }
 

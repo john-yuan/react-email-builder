@@ -2,6 +2,7 @@ import type React from 'react'
 import { useCallback, useContext, useMemo } from 'react'
 import {
   EmailBuilderConfigContext,
+  EmailBuilderDefaultFontStyleContext,
   EmailBuilderSelectedBlockInfoContext,
   EmailBuilderStateContext,
   SetEmailBuilderStateContext
@@ -29,17 +30,20 @@ export function useSelectedBlock() {
 
 export function useBlockStyle(block: EmailBuilderBlock) {
   const { style } = block
+  const fontStyle = useContext(EmailBuilderDefaultFontStyleContext)
+
   return useMemo<React.CSSProperties>(() => {
     const p = style.padding || []
     const u = undefined
     return {
+      ...fontStyle,
       backgroundColor: style.bgColor,
       paddingTop: p[0] ?? u,
       paddingRight: p[1] ?? u,
       paddingBottom: p[2] ?? u,
       paddingLeft: p[3] ?? u
     }
-  }, [style])
+  }, [fontStyle, style])
 }
 
 export function useBlockEditor<Attrs extends object = any>(blockId: string) {
