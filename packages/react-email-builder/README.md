@@ -57,15 +57,14 @@ export default function App() {
 This package provides a function named `generateMJML` that can be used to generate [MJML](https://mjml.io/) code from the email builder state. Here is an example:
 
 ```tsx
-// You can use the mjml-browser package to convert
-// the mjml to html
+// You can use the mjml-browser package to convert the mjml to html
 const mjml = generateMJML({ state, config })
 ```
 
 To serialize email build state, please use `serializeEmailBuilderState`. For example:
 
 ```tsx
-// You can save JSON.string(serialized) to your database.
+// You can save JSON.string(serialized) to your database
 const serialized = serializeEmailBuilderState(config, state)
 ```
 
