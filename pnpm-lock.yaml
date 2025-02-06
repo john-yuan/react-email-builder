@@ -24,7 +24,7 @@ importers:
         version: 18.2.0(react@18.2.0)
       react-email-builder:
         specifier: workspace:^
-        version: link:../library
+        version: link:../react-email-builder
       react-router-dom:
         specifier: ^6.21.3
         version: 6.21.3(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -84,7 +84,7 @@ importers:
         specifier: ^5.0.12
         version: 5.0.12(@types/node@20.11.7)(less@4.2.0)
 
-  packages/library:
+  packages/react-email-builder:
     dependencies:
       '@floating-ui/dom':
         specifier: ^1.6.12

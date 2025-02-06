@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useState } from 'react'
-import type { EmailBuilderConfig } from 'react-email-builder'
+import type { EmailBuilderConfig } from '../../../../react-email-builder/es'
 import {
   buttonBlock,
   columnsBlock,
@@ -12,7 +12,7 @@ import {
   spacerBlock,
   textBlock,
   createEmailBuilderState
-} from 'react-email-builder'
+} from '../../../../react-email-builder/es'
 import 'react-email-builder/styles.css'
 
 const EMAIL_KEY = 'docs:email'
