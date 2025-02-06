@@ -290,3 +290,31 @@ export function deserializeEmailBuilderState(
     blocks: state.blocks.map(importBlock)
   }
 }
+
+export function createEmailBuilderState(
+  initialState?: EmailBuilderState | (() => EmailBuilderState | null) | null
+): EmailBuilderState {
+  let state: EmailBuilderState = {
+    style: {
+      padding: [32, 0, 32, 0],
+      bgColor: '#FFFFFF'
+    },
+    blocks: [createPlaceholder()]
+  }
+
+  if (typeof initialState === 'function') {
+    const createdState = initialState()
+    state = createdState || state
+  } else if (initialState) {
+    state = initialState
+  }
+
+  if (!state.blocks.length) {
+    state = {
+      ...state,
+      blocks: [createPlaceholder()]
+    }
+  }
+
+  return state
+}

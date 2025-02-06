@@ -16,7 +16,8 @@ export {
   getCss,
   getSelectedBlock,
   isAbsoluteUrl,
-  normalizeUrl
+  normalizeUrl,
+  createEmailBuilderState
 } from './utils'
 
 export {

@@ -1,17 +1,17 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import type { EmailBuilderConfig, EmailBuilderState } from 'react-email-builder'
+import { useCallback, useMemo, useState } from 'react'
+import type { EmailBuilderConfig } from 'react-email-builder'
 import {
   buttonBlock,
   columnsBlock,
   generateMJML,
-  createBlock,
   deserializeEmailBuilderState,
   dividerBlock,
   EmailBuilder,
   imageBlock,
   serializeEmailBuilderState,
   spacerBlock,
-  textBlock
+  textBlock,
+  createEmailBuilderState
 } from 'react-email-builder'
 import 'react-email-builder/styles.css'
 
@@ -48,14 +48,7 @@ const config: EmailBuilderConfig = {
 
 export default function App() {
   const [key, setKey] = useState(0)
-  const [state, setState] = useState<EmailBuilderState>({
-    style: {
-      padding: [32, 0, 32, 0],
-      bgColor: '#ffffff'
-    },
-    blocks: [createBlock(config, 'button'), createBlock(config, 'text')]
-  })
-
+  const [state, setState] = useState(() => createEmailBuilderState())
   const editorStyle = useMemo<React.CSSProperties>(
     () => ({
       height: 'calc(100vh - 60px)'
@@ -75,9 +68,9 @@ export default function App() {
     }
   }, [])
 
-  useEffect(() => {
-    deserialize()
-  }, [deserialize])
+  // useEffect(() => {
+  //   deserialize()
+  // }, [deserialize])
 
   return (
     <div style={{ padding: 14, background: '#f1f2f3' }}>
