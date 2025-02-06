@@ -257,7 +257,7 @@ export function serializeEmailBuilderState(
 
 export function deserializeEmailBuilderState(
   config: EmailBuilderConfig,
-  state: SerializedEmailBuilderState
+  serialized: SerializedEmailBuilderState
 ): EmailBuilderState {
   const importBlock = (block: EmailBuilderBlock) => {
     const blockConfig = config.blocks.find((b) => b.type === block.type)
@@ -286,8 +286,8 @@ export function deserializeEmailBuilderState(
   }
 
   return {
-    style: state.style,
-    blocks: state.blocks.map(importBlock)
+    style: serialized.style,
+    blocks: serialized.blocks.map(importBlock)
   }
 }
 
