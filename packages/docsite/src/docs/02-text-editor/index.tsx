@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo, useState } from 'react'
-import type { TextEditorState, TextEditorVariable } from '../../../../react-email-builder/es'
-import { TextEditor } from '../../../../react-email-builder/es'
+import type { TextEditorState, TextEditorVariable } from 'react-email-builder'
+import { TextEditor } from 'react-email-builder'
 
 export default function App() {
   const [state, setState] = useState<TextEditorState>({})

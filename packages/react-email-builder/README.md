@@ -1,25 +1,76 @@
-# Typescript Template
+# React Email Builder
 
-This repository is a template for [TypeScript](https://www.typescriptlang.org/) projects with [editorconfig](https://editorconfig.org/), [prettier](https://prettier.io/) and [eslint](https://eslint.org/) configured. This project uses [pnpm](https://pnpm.io/) as package manager by default, you can use [npm](https://www.npmjs.com/) if you prefer.
+[![npm version](https://img.shields.io/npm/v/react-email-builder.svg)](https://www.npmjs.com/package/react-email-builder)
 
-## Commands
+A simple React drag and drop email builder.
 
-```bash
-# install dependencies
-pnpm i
+```sh
+npm i react-email-builder
+```
 
-# build and run
-pnpm dev
+## Usage
 
-# compile to javascript
-pnpm build
+```tsx
+import { useState } from 'react'
+import {
+  buttonBlock,
+  columnsBlock,
+  createEmailBuilderState,
+  dividerBlock,
+  EmailBuilder,
+  imageBlock,
+  spacerBlock,
+  textBlock
+} from 'react-email-builder'
+import 'react-email-builder/styles.css'
+import type { EmailBuilderConfig } from 'react-email-builder'
 
-# format with prettier
-pnpm format
+const config: EmailBuilderConfig = {
+  blocks: [
+    columnsBlock(),
+    buttonBlock(),
+    dividerBlock(),
+    textBlock(),
+    imageBlock(),
+    spacerBlock()
+  ],
+  upload: async (file: File) => {
+    // mock file upload
+    await new Promise((resolve) => setTimeout(resolve, 500))
+    return { url: URL.createObjectURL(file) }
+  }
+}
 
-# lint with eslint
-pnpm lint
+export default function App() {
+  const [state, setState] = useState(() => createEmailBuilderState())
+  return (
+    <EmailBuilder
+      config={config}
+      style={{ height: 800, width: 1200, margin: '16px auto' }}
+      state={state}
+      setState={setState}
+    />
+  )
+}
+```
 
-# lint with eslint and fix
-pnpm lint:fix
+This package provides a function named `generateMJML` that can be used to generate [MJML](https://mjml.io/) code from the email builder state. Here is an example:
+
+```tsx
+// You can use the mjml-browser package to convert
+// the mjml to html
+const mjml = generateMJML({ state, config })
+```
+
+To serialize email build state, please use `serializeEmailBuilderState`. For example:
+
+```tsx
+// You can save JSON.string(serialized) to your database.
+const serialized = serializeEmailBuilderState(config, state)
+```
+
+To deserialize email build state, please use `deserializeEmailBuilderState`. For example:
+
+```tsx
+const state = deserializeEmailBuilderState(config, serialized)
 ```
