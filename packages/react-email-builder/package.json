@@ -56,5 +56,9 @@
     "email-editor",
     "react-component"
   ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "license": "MIT"
 }
